@@ -1,7 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function ContactPage() {
+  const searchParams = useSearchParams();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,12 +63,24 @@ export default function ContactPage() {
   const topicOptions = [
     { value: "", label: "Select a topic" },
     { value: "design-brief", label: "Design Brief & Consultation" },
+    { value: "design-consultation", label: "Design Consultation" },
     { value: "brand-audit", label: "Brand Audit & Strategy" },
+    { value: "brand-workshop", label: "Brand Workshop" },
     { value: "mep-quote", label: "MEP Services Quote" },
+    { value: "mepscope", label: "MEP Scope Discussion" },
     { value: "rfp", label: "Request for Proposal" },
+    { value: "discovery-call", label: "Discovery Call" },
     { value: "partnership", label: "Partnership Opportunity" },
     { value: "general", label: "General Inquiry" },
   ];
+
+  // Handle URL parameters to pre-fill form
+  useEffect(() => {
+    const topic = searchParams.get("topic");
+    if (topic) {
+      setFormData((prev) => ({ ...prev, topic }));
+    }
+  }, [searchParams]);
 
   return (
     <main className="min-h-screen bg-background">

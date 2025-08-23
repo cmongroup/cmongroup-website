@@ -111,7 +111,7 @@ export const siteConfig = {
         { title: "About", route: "/about" },
         { title: "Contact", route: "/contact" },
       ],
-      cta: { title: "Book now", route: "/book", variant: "primary" },
+      cta: { title: "Book now", route: "/contact", variant: "primary" },
       style: { sticky: true, background: "transparent", blend: "light" },
     },
     hero: {
@@ -180,7 +180,7 @@ export const siteConfig = {
               },
               {
                 title: "Book consultation",
-                route: "/book?team=cmon-design",
+                route: "/contact?topic=design-consultation",
                 variant: "ghost",
               },
             ],
@@ -305,7 +305,11 @@ export const siteConfig = {
         heading: "One team from vision to handover.",
         text: "Tell us about your space or brand and we’ll assemble the right team across design, branding, and MEP to deliver end-to-end.",
         actions: [
-          { title: "Book a discovery call", route: "/book", variant: "black" },
+          {
+            title: "Book a discovery call",
+            route: "/contact?topic=discovery-call",
+            variant: "black",
+          },
           {
             title: "Send your RFP",
             route: "/contact?topic=rfp",
@@ -324,7 +328,6 @@ export const siteConfig = {
               value: "Design • F&B Rebranding • Electromechanical",
             },
             { type: "link", label: "About", route: "/about" },
-            { type: "link", label: "Careers", route: "/careers" },
           ],
         },
         {
@@ -342,18 +345,22 @@ export const siteConfig = {
         {
           title: "Contact",
           items: [
-            { type: "link", label: "Book now", route: "/book" },
-            { type: "text", value: "hello@cmon.group" },
-            { type: "text", value: "+961 00 000 000" },
+            { type: "link", label: "Book now", route: "/contact" },
+            {
+              type: "link",
+              label: "hello@cmon.group",
+              route: "mailto:hello@cmon.group",
+            },
+            {
+              type: "link",
+              label: "+961 00 000 000",
+              route: "tel:+96100000000",
+            },
           ],
         },
       ],
       bottom: {
         legal: "© 2025 c mon group. All rights reserved.",
-        links: [
-          { label: "Privacy", route: "/privacy" },
-          { label: "Terms", route: "/terms" },
-        ],
       },
     },
     routes: [
@@ -383,7 +390,7 @@ export const siteConfig = {
             heading: "Start your project",
             action: {
               title: "Book consultation",
-              route: "/book?team=cmon-design",
+              route: "/contact?topic=design-consultation",
             },
           },
         ],
