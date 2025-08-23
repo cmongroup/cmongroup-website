@@ -1,52 +1,27 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { useContent } from "@/app/contexts/ContentContext";
 
-interface EditableWebsiteTextProps {
+interface EditableFooterTextProps {
   path: string;
   children: React.ReactNode;
   className?: string;
   tag?: keyof JSX.IntrinsicElements;
 }
 
-export default function EditableWebsiteText({
+export default function EditableFooterText({
   path,
   children,
   className = "",
   tag = "span",
-}: EditableWebsiteTextProps) {
+}: EditableFooterTextProps) {
   const { isAdmin } = useAuth();
-  const { updateWebsiteText, websiteContent } = useContent();
+  const { updateFooterText } = useContent();
   const [isEditing, setIsEditing] = useState(false);
+  const [text, setText] = useState(children as string);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Get the current content from Firebase or use fallback
-  const getContentByPath = (path: string): string => {
-    if (!websiteContent) return children as string;
-
-    const pathParts = path.split(".");
-    let content: any = websiteContent;
-
-    for (const part of pathParts) {
-      if (content && typeof content === "object" && part in content) {
-        content = content[part];
-      } else {
-        return children as string; // fallback if path doesn't exist
-      }
-    }
-
-    return typeof content === "string" ? content : (children as string);
-  };
-
-  const currentContent = getContentByPath(path);
-  const [text, setText] = useState(currentContent);
-
-  // Update text when content changes
-  useEffect(() => {
-    setText(currentContent);
-  }, [currentContent]);
 
   const handleDoubleClick = () => {
     if (isAdmin) {
@@ -59,18 +34,18 @@ export default function EditableWebsiteText({
 
     setIsLoading(true);
     try {
-      await updateWebsiteText(path, text);
+      await updateFooterText(path, text);
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating website text:", error);
-      setText(currentContent);
+      console.error("Error updating footer text:", error);
+      setText(children as string);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCancel = () => {
-    setText(currentContent);
+    setText(children as string);
     setIsEditing(false);
   };
 
@@ -84,51 +59,46 @@ export default function EditableWebsiteText({
 
   if (!isAdmin) {
     const Tag = tag as any;
-    return <Tag className={className}>{currentContent}</Tag>;
+    return <Tag className={className}>{children}</Tag>;
   }
 
   if (isEditing) {
     return (
-      <div className="relative border-2 border-accent rounded-lg p-3 bg-white shadow-lg">
+      <div className="relative border-2 border-accent rounded-lg p-2 bg-white">
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full px-3 py-2 border border-accent/20 rounded-lg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 text-sm text-gray-900 placeholder-gray-500"
+          className="w-full px-2 py-1 border border-accent/20 rounded-lg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 text-sm"
           placeholder="Enter text"
           autoFocus
         />
 
-        <div className="flex gap-2 mt-3">
+        <div className="flex gap-2 mt-2">
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="px-3 py-1.5 bg-accent text-white text-xs font-medium rounded hover:bg-accent-dark transition-colors disabled:opacity-50"
+            className="px-3 py-1 bg-accent text-text rounded text-xs hover:bg-accent-dark transition-colors disabled:opacity-50"
           >
             {isLoading ? "Saving..." : "Save"}
           </button>
           <button
             onClick={handleCancel}
-            className="px-3 py-1.5 border border-accent/20 text-accent text-xs font-medium rounded hover:bg-accent/10 transition-colors"
+            className="px-3 py-1 border border-accent/20 text-accent rounded text-xs hover:bg-accent/10 transition-colors"
           >
             Cancel
           </button>
         </div>
 
         {isLoading && (
-          <div className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full animate-pulse" />
+          <div className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full animate-pulse" />
         )}
       </div>
     );
   }
 
   const Tag = tag as any;
-
-  if (!isAdmin) {
-    return <Tag className={className}>{currentContent}</Tag>;
-  }
-
   return (
     <Tag
       className={`${className} ${isAdmin ? "cursor-pointer hover:bg-accent/30 hover:border-2 hover:border-accent/60 hover:shadow-md rounded px-2 py-1 transition-all duration-200 relative group editable-text admin-editable" : ""}`}
@@ -137,7 +107,7 @@ export default function EditableWebsiteText({
       onDoubleClick={handleDoubleClick}
       title={isAdmin ? "Double-click to edit" : undefined}
     >
-      {currentContent}
+      {children}
       {isAdmin && (
         <span
           className="absolute inset-0 border border-accent/0 group-hover:border-accent/80 rounded transition-all duration-200 pointer-events-none opacity-0 group-hover:opacity-100"

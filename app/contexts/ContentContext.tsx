@@ -8,6 +8,8 @@ import {
   collection,
   getDocs,
   updateDoc,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 import app from "@/lib/firebase";
 
@@ -62,11 +64,53 @@ interface CompanyImages {
   section5Alt: string;
 }
 
+interface FooterContent {
+  columns: [
+    {
+      title: string;
+      items: [
+        {
+          type: "text" | "link";
+          value?: string;
+          label?: string;
+          route?: string;
+        },
+      ];
+    },
+    {
+      title: string;
+      items: [
+        {
+          type: "text" | "link";
+          value?: string;
+          label?: string;
+          route?: string;
+        },
+      ];
+    },
+    {
+      title: string;
+      items: [
+        {
+          type: "text" | "link";
+          value?: string;
+          label?: string;
+          route?: string;
+        },
+      ];
+    },
+  ];
+  bottom: {
+    legal: string;
+  };
+}
+
 interface ContentContextType {
   companyContent: Record<string, CompanyContent> | null;
   companyImages: Record<string, CompanyImages> | null;
   websiteContent: any | null;
   websiteImages: any | null;
+  footerContent: FooterContent | null;
   isLoading: boolean;
   updateCompanyText: (
     companySlug: string,
@@ -80,6 +124,7 @@ interface ContentContextType {
   ) => Promise<void>;
   updateWebsiteText: (path: string, value: string | string[]) => Promise<void>;
   updateWebsiteImage: (path: string, value: string) => Promise<void>;
+  updateFooterText: (path: string, value: string) => Promise<void>;
 }
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
@@ -95,6 +140,9 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   > | null>(null);
   const [websiteContent, setWebsiteContent] = useState<any | null>(null);
   const [websiteImages, setWebsiteImages] = useState<any | null>(null);
+  const [footerContent, setFooterContent] = useState<FooterContent | null>(
+    null
+  );
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -109,11 +157,13 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           companyImagesSnapshot,
           websiteContentSnapshot,
           websiteImagesSnapshot,
+          footerContentSnapshot,
         ] = await Promise.all([
           getDocs(collection(db, "companyContent")),
           getDocs(collection(db, "companyImages")),
           getDocs(collection(db, "websiteContent")),
           getDocs(collection(db, "websiteImages")),
+          getDocs(collection(db, "footerContent")),
         ]);
 
         const companyContent: Record<string, CompanyContent> = {};
@@ -130,11 +180,15 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         // Get website content and images
         const websiteContent = websiteContentSnapshot.docs[0]?.data() || null;
         const websiteImages = websiteImagesSnapshot.docs[0]?.data() || null;
+        const footerContent =
+          (footerContentSnapshot.docs[0]?.data() as FooterContent | null) ||
+          null;
 
         setCompanyContent(companyContent);
         setCompanyImages(companyImages);
         setWebsiteContent(websiteContent);
         setWebsiteImages(websiteImages);
+        setFooterContent(footerContent);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -190,11 +244,23 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
+    const unsubscribeFooterContent = onSnapshot(
+      collection(db, "footerContent"),
+      () => {
+        // Refetch all data when footer content changes
+        fetchAllData();
+      },
+      (error) => {
+        console.error("Error listening to footer content changes:", error);
+      }
+    );
+
     return () => {
       unsubscribeCompanyContent();
       unsubscribeCompanyImages();
       unsubscribeWebsiteContent();
       unsubscribeWebsiteImages();
+      unsubscribeFooterContent();
     };
   }, []);
 
@@ -262,6 +328,86 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateFooterText = async (path: string, value: string) => {
+    try {
+      const db = getFirestore(app);
+      const footerRef = doc(db, "footerContent", "main");
+
+      // Get current footer content first
+      const currentDoc = await getDoc(footerRef);
+      if (!currentDoc.exists()) {
+        throw new Error("Footer content document does not exist");
+      }
+
+      const currentData = currentDoc.data() as FooterContent;
+
+      // Create a deep copy to avoid mutating the original
+      const updatedData = JSON.parse(JSON.stringify(currentData));
+
+      // Update the nested path manually with proper array handling
+      const pathParts = path.split(".");
+      let current: any = updatedData;
+
+      // Navigate to the parent of the target property
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        const part = pathParts[i];
+        const isArrayIndex = !isNaN(Number(part));
+
+        if (current && typeof current === "object") {
+          if (Array.isArray(current) && isArrayIndex) {
+            const index = Number(part);
+            if (index >= 0 && index < current.length) {
+              current = current[index];
+            } else {
+              throw new Error(
+                `Array index out of bounds: ${index} in path ${path}`
+              );
+            }
+          } else if (!Array.isArray(current) && part in current) {
+            current = current[part];
+          } else {
+            throw new Error(`Invalid path segment: ${part} in path ${path}`);
+          }
+        } else {
+          throw new Error(`Invalid path: ${path}`);
+        }
+      }
+
+      // Update the target property
+      const lastPart = pathParts[pathParts.length - 1];
+      const isLastArrayIndex = !isNaN(Number(lastPart));
+
+      if (current && typeof current === "object") {
+        if (Array.isArray(current) && isLastArrayIndex) {
+          const index = Number(lastPart);
+          if (index >= 0 && index < current.length) {
+            current[index] = value;
+          } else {
+            throw new Error(
+              `Array index out of bounds: ${index} in path ${path}`
+            );
+          }
+        } else if (!Array.isArray(current) && lastPart in current) {
+          current[lastPart] = value;
+        } else {
+          throw new Error(
+            `Invalid final path segment: ${lastPart} in path ${path}`
+          );
+        }
+      } else {
+        throw new Error(`Cannot update path: ${path}`);
+      }
+
+      // Save the entire updated document (overwrite to preserve array structure)
+      await setDoc(footerRef, updatedData);
+
+      console.log(`✅ Successfully updated footer path: ${path} = ${value}`);
+    } catch (error) {
+      console.error("Error updating footer text:", error);
+      throw error;
+    }
+  };
+
   return (
     <ContentContext.Provider
       value={{
@@ -269,11 +415,13 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         companyImages,
         websiteContent,
         websiteImages,
+        footerContent,
         isLoading,
         updateCompanyText,
         updateCompanyImage,
         updateWebsiteText,
         updateWebsiteImage,
+        updateFooterText,
       }}
     >
       {children}

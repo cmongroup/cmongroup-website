@@ -306,57 +306,52 @@ export default function HomePage() {
           <div className="block lg:hidden">
             <div className="grid gap-6">
               {companies.cards.map((card) => (
-                <Link
+                <article
                   key={card.slug}
-                  href={`/companies/${card.slug}`}
-                  className="block"
+                  className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300"
+                  aria-labelledby={`${card.slug}-title-mobile`}
                 >
-                  <article
-                    className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300 cursor-pointer"
-                    aria-labelledby={`${card.slug}-title-mobile`}
-                  >
-                    <div className="aspect-4/3 overflow-hidden bg-background relative">
-                      <Image
-                        src={card.media.cover}
-                        alt={card.media.alt}
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                      />
-                    </div>
-                    <div className="p-6 flex flex-col gap-4 flex-1">
-                      <div className="space-y-2">
-                        <h3
-                          id={`${card.slug}-title-mobile`}
-                          className="font-heading text-xl"
-                        >
-                          {card.brand.name}
-                        </h3>
-                        <p className="text-xs uppercase tracking-wide text-muted/90">
-                          {card.tagline}
-                        </p>
-                      </div>
-                      <p className="text-sm text-muted leading-relaxed flex-1">
-                        {card.summary}
+                  <div className="aspect-4/3 overflow-hidden bg-background relative">
+                    <Image
+                      src={card.media.cover}
+                      alt={card.media.alt}
+                      fill
+                      className="object-cover"
+                      sizes="100vw"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col gap-4 flex-1">
+                    <div className="space-y-2">
+                      <h3
+                        id={`${card.slug}-title-mobile`}
+                        className="font-heading text-xl"
+                      >
+                        {card.brand.name}
+                      </h3>
+                      <p className="text-xs uppercase tracking-wide text-muted/90">
+                        {card.tagline}
                       </p>
-                      <ul className="text-[13px] space-y-1">
-                        {card.services.map((s) => (
-                          <li key={s} className="pl-4 relative">
-                            <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
-                            {s}
-                          </li>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed flex-1">
+                      {card.summary}
+                    </p>
+                    <ul className="text-[13px] space-y-1">
+                      {card.services.map((s) => (
+                        <li key={s} className="pl-4 relative">
+                          <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="pt-4">
+                      <div className="flex flex-col gap-2">
+                        {card.actions.map((a) => (
+                          <Button key={a.title} action={a} />
                         ))}
-                      </ul>
-                      <div className="pt-4">
-                        <div className="flex flex-col gap-2">
-                          {card.actions.map((a) => (
-                            <Button key={a.title} action={a} />
-                          ))}
-                        </div>
                       </div>
                     </div>
-                  </article>
-                </Link>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
@@ -431,56 +426,51 @@ export default function HomePage() {
                         aria-roledescription="slide"
                         aria-label={`${idx + 1} of ${total}`}
                       >
-                        <Link
-                          href={`/companies/${card.slug}`}
-                          className="block"
+                        <div
+                          className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300"
+                          aria-labelledby={`${card.slug}-title-desktop`}
                         >
-                          <div
-                            className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300 cursor-pointer"
-                            aria-labelledby={`${card.slug}-title-desktop`}
-                          >
-                            <div className="aspect-4/3 overflow-hidden bg-background relative">
-                              <Image
-                                src={card.media.cover}
-                                alt={card.media.alt}
-                                fill
-                                className="object-cover"
-                                sizes="(min-width:768px) 400px, 100vw"
-                              />
-                            </div>
-                            <div className="p-6 flex flex-col gap-4 flex-1">
-                              <div className="space-y-2">
-                                <h3
-                                  id={`${card.slug}-title-desktop`}
-                                  className="font-heading text-xl"
-                                >
-                                  {card.brand.name}
-                                </h3>
-                                <p className="text-xs uppercase tracking-wide text-muted/90">
-                                  {card.tagline}
-                                </p>
-                              </div>
-                              <p className="text-sm text-muted leading-relaxed flex-1">
-                                {card.summary}
+                          <div className="aspect-4/3 overflow-hidden bg-background relative">
+                            <Image
+                              src={card.media.cover}
+                              alt={card.media.alt}
+                              fill
+                              className="object-cover"
+                              sizes="(min-width:768px) 400px, 100vw"
+                            />
+                          </div>
+                          <div className="p-6 flex flex-col gap-4 flex-1">
+                            <div className="space-y-2">
+                              <h3
+                                id={`${card.slug}-title-desktop`}
+                                className="font-heading text-xl"
+                              >
+                                {card.brand.name}
+                              </h3>
+                              <p className="text-xs uppercase tracking-wide text-muted/90">
+                                {card.tagline}
                               </p>
-                              <ul className="text-[13px] space-y-1">
-                                {card.services.map((s) => (
-                                  <li key={s} className="pl-4 relative">
-                                    <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
-                                    {s}
-                                  </li>
+                            </div>
+                            <p className="text-sm text-muted leading-relaxed flex-1">
+                              {card.summary}
+                            </p>
+                            <ul className="text-[13px] space-y-1">
+                              {card.services.map((s) => (
+                                <li key={s} className="pl-4 relative">
+                                  <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
+                                  {s}
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="pt-4">
+                              <div className="flex flex-col gap-2">
+                                {card.actions.map((a) => (
+                                  <Button key={a.title} action={a} />
                                 ))}
-                              </ul>
-                              <div className="pt-4">
-                                <div className="flex flex-col gap-2">
-                                  {card.actions.map((a) => (
-                                    <Button key={a.title} action={a} />
-                                  ))}
-                                </div>
                               </div>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </motion.article>
                     );
                   })}
@@ -499,57 +489,52 @@ export default function HomePage() {
           {(!companies.presentation || companies.presentation !== "slider") && (
             <div className="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto px-8">
               {companies.cards.map((card) => (
-                <Link
+                <article
                   key={card.slug}
-                  href={`/companies/${card.slug}`}
-                  className="block"
+                  className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300"
+                  aria-labelledby={`${card.slug}-title`}
                 >
-                  <article
-                    className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl hover:ring-2 hover:ring-accent/20 transition-all duration-300 cursor-pointer"
-                    aria-labelledby={`${card.slug}-title`}
-                  >
-                    <div className="aspect-4/3 overflow-hidden bg-background relative">
-                      <Image
-                        src={card.media.cover}
-                        alt={card.media.alt}
-                        fill
-                        className="object-cover"
-                        sizes="(min-width:768px) 33vw, 100vw"
-                      />
-                    </div>
-                    <div className="p-6 flex flex-col gap-4 flex-1">
-                      <div className="space-y-2">
-                        <h3
-                          id={`${card.slug}-title`}
-                          className="font-heading text-xl"
-                        >
-                          {card.brand.name}
-                        </h3>
-                        <p className="text-xs uppercase tracking-wide text-muted/90">
-                          {card.tagline}
-                        </p>
-                      </div>
-                      <p className="text-sm text-muted leading-relaxed flex-1">
-                        {card.summary}
+                  <div className="aspect-4/3 overflow-hidden bg-background relative">
+                    <Image
+                      src={card.media.cover}
+                      alt={card.media.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width:768px) 33vw, 100vw"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col gap-4 flex-1">
+                    <div className="space-y-2">
+                      <h3
+                        id={`${card.slug}-title`}
+                        className="font-heading text-xl"
+                      >
+                        {card.brand.name}
+                      </h3>
+                      <p className="text-xs uppercase tracking-wide text-muted/90">
+                        {card.tagline}
                       </p>
-                      <ul className="text-[13px] space-y-1">
-                        {card.services.map((s) => (
-                          <li key={s} className="pl-4 relative">
-                            <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
-                            {s}
-                          </li>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed flex-1">
+                      {card.summary}
+                    </p>
+                    <ul className="text-[13px] space-y-1">
+                      {card.services.map((s) => (
+                        <li key={s} className="pl-4 relative">
+                          <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="pt-4">
+                      <div className="flex flex-col gap-2">
+                        {card.actions.map((a) => (
+                          <Button key={a.title} action={a} />
                         ))}
-                      </ul>
-                      <div className="pt-4">
-                        <div className="flex flex-col gap-2">
-                          {card.actions.map((a) => (
-                            <Button key={a.title} action={a} />
-                          ))}
-                        </div>
                       </div>
                     </div>
-                  </article>
-                </Link>
+                  </div>
+                </article>
               ))}
             </div>
           )}

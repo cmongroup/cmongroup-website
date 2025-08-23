@@ -3,6 +3,7 @@ import React from "react";
 import { siteConfig as _siteConfigAlias } from "@/lib/siteConfig";
 import Link from "next/link";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ContentProvider } from "./contexts/ContentContext";
 // Add types for stronger typing of metadata & viewport
@@ -52,39 +53,7 @@ export default function RootLayout({
             <main className="flex-1 px-6 py-10 mx-auto w-full max-w-container">
               {children}
             </main>
-            <footer className="mt-16 border-t border-black/5 text-sm text-muted/90">
-              <div className="mx-auto max-w-container px-6 py-12 grid gap-10 md:grid-cols-3">
-                {_siteConfigAlias.website.footer.columns?.map((col: any) => (
-                  <div key={col.title} className="space-y-4">
-                    <h3 className="font-heading text-base text-text">
-                      {col.title}
-                    </h3>
-                    <ul className="space-y-2 text-xs">
-                      {col.items.map((it: any, i: number) => (
-                        <li key={i}>
-                          {it.type === "link" ? (
-                            <Link
-                              href={it.route}
-                              className="hover:text-accent transition-colors"
-                            >
-                              {it.label}
-                            </Link>
-                          ) : (
-                            <span className="opacity-80">{it.value}</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-              <div className="border-t border-black/5">
-                <div className="mx-auto max-w-container px-6 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <p className="text-xs">{footer.bottom.legal}</p>
-                  <span className="opacity-60">{meta.author}</span>
-                </div>
-              </div>
-            </footer>
+            <Footer />
           </ContentProvider>
         </AuthProvider>
       </body>
