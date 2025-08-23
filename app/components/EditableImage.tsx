@@ -14,6 +14,12 @@ interface EditableImageProps {
   height?: number;
   className?: string;
   priority?: boolean;
+  updateFunction?: (
+    companySlug: string,
+    path: string,
+    value: string
+  ) => Promise<void>;
+  placeholderSrc?: string;
 }
 
 // Image compression function
@@ -70,6 +76,8 @@ export default function EditableImage({
   height = 600,
   className = "",
   priority = false,
+  updateFunction,
+  placeholderSrc,
 }: EditableImageProps) {
   const { isAdmin } = useAuth();
   const { updateCompanyImage } = useContent();
@@ -146,16 +154,25 @@ export default function EditableImage({
 
     setIsLoading(true);
     try {
-      // Save src and alt separately using the flattened structure
-      // path should be like "section1Src" or "section1Alt"
-      const basePath = path.replace(/Src$|Alt$/, "");
-      const srcPath = `${basePath}Src`;
-      const altPath = `${basePath}Alt`;
+      if (updateFunction) {
+        // Use custom update function (for companies page)
+        await updateFunction(companySlug, path, imageSrc);
+        // Update alt text separately if needed
+        const altPath = path.replace("Src", "Alt");
+        await updateFunction(companySlug, altPath, imageAlt);
+      } else {
+        // Use default update function (for individual company pages)
+        // Save src and alt separately using the flattened structure
+        // path should be like "section1Src" or "section1Alt"
+        const basePath = path.replace(/Src$|Alt$/, "");
+        const srcPath = `${basePath}Src`;
+        const altPath = `${basePath}Alt`;
 
-      // Update src
-      await updateCompanyImage(companySlug, srcPath, imageSrc);
-      // Update alt
-      await updateCompanyImage(companySlug, altPath, imageAlt);
+        // Update src
+        await updateCompanyImage(companySlug, srcPath, imageSrc);
+        // Update alt
+        await updateCompanyImage(companySlug, altPath, imageAlt);
+      }
 
       setIsEditing(false);
       setError(null);
@@ -174,6 +191,43 @@ export default function EditableImage({
     setImageAlt(alt);
     setIsEditing(false);
     setError(null);
+  };
+
+  const handleRestorePlaceholder = async () => {
+    try {
+      setIsLoading(true);
+
+      // Use placeholderSrc if available, otherwise fall back to original src
+      const imageToRestore = placeholderSrc || src;
+
+      if (updateFunction) {
+        // Use custom update function (for companies page)
+        await updateFunction(companySlug, path, imageToRestore);
+        // Update alt text separately if needed
+        const altPath = path.replace("Src", "Alt");
+        await updateFunction(companySlug, altPath, alt);
+      } else {
+        // Use default update function (for individual company pages)
+        const basePath = path.replace(/Src$|Alt$/, "");
+        const srcPath = `${basePath}Src`;
+        const altPath = `${basePath}Alt`;
+
+        // Update src
+        await updateCompanyImage(companySlug, srcPath, imageToRestore);
+        // Update alt
+        await updateCompanyImage(companySlug, altPath, alt);
+      }
+
+      setImageSrc(imageToRestore);
+      setImageAlt(alt);
+      setError(null);
+      setIsEditing(false); // Exit editing mode after restoring placeholder
+    } catch (error) {
+      console.error("Error restoring image:", error);
+      setError("Failed to restore image. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -219,6 +273,15 @@ export default function EditableImage({
               className="w-full px-3 py-2 border border-accent/20 rounded-lg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               placeholder="Enter alt text"
             />
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={handleRestorePlaceholder}
+              className="px-4 py-2 border border-accent/20 text-accent rounded-lg hover:bg-accent/10 transition-colors"
+            >
+              Restore Original
+            </button>
           </div>
 
           <div className="flex gap-2">

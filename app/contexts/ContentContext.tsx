@@ -48,48 +48,11 @@ interface CompanyImages {
   section3Alt: string;
 }
 
-// New interfaces for companies page
-interface CompaniesPageContent {
-  header: {
-    badge: string;
-    title: string;
-    description: string;
-  };
-  companies: {
-    [key: string]: {
-      tagline: string;
-      brandName: string;
-      summary: string;
-      services: string[];
-      servicesLabel: string;
-    };
-  };
-  cta: {
-    title: string;
-    description: string;
-    primaryButton: {
-      title: string;
-      route: string;
-    };
-    secondaryButton: {
-      title: string;
-      route: string;
-    };
-  };
-}
 
-interface CompaniesPageImages {
-  [key: string]: {
-    coverSrc: string;
-    coverAlt: string;
-  };
-}
 
 interface ContentContextType {
   companyContent: Record<string, CompanyContent> | null;
   companyImages: Record<string, CompanyImages> | null;
-  companiesPageContent: CompaniesPageContent | null;
-  companiesPageImages: CompaniesPageImages | null;
   isLoading: boolean;
   updateCompanyText: (
     companySlug: string,
@@ -97,15 +60,6 @@ interface ContentContextType {
     value: string | string[]
   ) => Promise<void>;
   updateCompanyImage: (
-    companySlug: string,
-    path: string,
-    value: string
-  ) => Promise<void>;
-  updateCompaniesPageText: (
-    path: string,
-    value: string | string[]
-  ) => Promise<void>;
-  updateCompaniesPageImage: (
     companySlug: string,
     path: string,
     value: string
@@ -123,10 +77,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     string,
     CompanyImages
   > | null>(null);
-  const [companiesPageContent, setCompaniesPageContent] =
-    useState<CompaniesPageContent | null>(null);
-  const [companiesPageImages, setCompaniesPageImages] =
-    useState<CompaniesPageImages | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -138,13 +89,9 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         const [
           contentSnapshot,
           imagesSnapshot,
-          companiesPageContentSnapshot,
-          companiesPageImagesSnapshot,
         ] = await Promise.all([
           getDocs(collection(db, "companyContent")),
           getDocs(collection(db, "companyImages")),
-          getDocs(collection(db, "companiesPageContent")),
-          getDocs(collection(db, "companiesPageImages")),
         ]);
 
         const content: Record<string, CompanyContent> = {};
@@ -158,22 +105,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
           images[doc.id] = doc.data() as CompanyImages;
         });
 
-        // Get companies page content (should only be one document)
-        let companiesPageContentData: CompaniesPageContent | null = null;
-        companiesPageContentSnapshot.forEach((doc) => {
-          companiesPageContentData = doc.data() as CompaniesPageContent;
-        });
-
-        // Get companies page images (should only be one document)
-        let companiesPageImagesData: CompaniesPageImages | null = null;
-        companiesPageImagesSnapshot.forEach((doc) => {
-          companiesPageImagesData = doc.data() as CompaniesPageImages;
-        });
-
         setCompanyContent(content);
         setCompanyImages(images);
-        setCompaniesPageContent(companiesPageContentData);
-        setCompaniesPageImages(companiesPageImagesData);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching company data:", error);
@@ -196,21 +129,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // Listen to changes on companies page content
-    const unsubscribeCompaniesPage = onSnapshot(
-      doc(db, "companiesPageContent", "main"),
-      () => {
-        // Refetch all data when companies page changes
-        fetchCompanyData();
-      },
-      (error) => {
-        console.error("Error listening to companies page changes:", error);
-      }
-    );
-
     return () => {
       unsubscribeContent();
-      unsubscribeCompaniesPage();
     };
   }, []);
 
@@ -259,62 +179,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateCompaniesPageText = async (
-    path: string,
-    value: string | string[]
-  ) => {
-    try {
-      const db = getFirestore(app);
-      const companiesPageRef = doc(db, "companiesPageContent", "main");
 
-      // Handle nested path updates
-      const pathParts = path.split(".");
-      const updateData: any = {};
-      let current = updateData;
-
-      for (let i = 0; i < pathParts.length - 1; i++) {
-        current[pathParts[i]] = {};
-        current = current[pathParts[i]];
-      }
-      current[pathParts[pathParts.length - 1]] = value;
-
-      await updateDoc(companiesPageRef, updateData);
-    } catch (error) {
-      console.error("Error updating companies page text:", error);
-      throw error;
-    }
-  };
-
-  const updateCompaniesPageImage = async (
-    companySlug: string,
-    path: string,
-    value: string
-  ) => {
-    try {
-      const db = getFirestore(app);
-      const companiesPageRef = doc(db, "companiesPageImages", "main");
-
-      // Update the specific company's image
-      const updateData = { [companySlug]: { [path]: value } };
-      await updateDoc(companiesPageRef, updateData);
-    } catch (error) {
-      console.error("Error updating companies page image:", error);
-      throw error;
-    }
-  };
 
   return (
     <ContentContext.Provider
       value={{
         companyContent,
         companyImages,
-        companiesPageContent,
-        companiesPageImages,
         isLoading,
         updateCompanyText,
         updateCompanyImage,
-        updateCompaniesPageText,
-        updateCompaniesPageImage,
       }}
     >
       {children}

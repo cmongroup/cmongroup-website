@@ -100,7 +100,7 @@ export const siteConfig = {
         { title: "Services", route: "/#services" },
         {
           title: "Companies",
-          route: "/companies",
+          route: "#",
           children: [
             { title: "c mon design", route: "/companies/cmon-design" },
             { title: "rebred", route: "/companies/rebred" },
@@ -126,7 +126,7 @@ export const siteConfig = {
         subtext:
           "We unite interior architecture, brand strategy for F&B, and electromechanical execution. One group. Three expert companies. End-to-end delivery from concept to commissioning.",
         actions: [
-          { title: "Learn more", route: "/#companies", variant: "primary" },
+          { title: "Learn more", route: "/#services", variant: "primary" },
           { title: "What we deliver", route: "/#services", variant: "ghost" },
         ],
       },

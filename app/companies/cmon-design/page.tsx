@@ -18,7 +18,7 @@ const buttonBase =
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-black text-white hover:bg-accent hover:text-text",
   ghost: "border border-text/60 text-text hover:bg-text hover:text-white",
-  accent: "bg-accent text-text hover:bg-black hover:text-text",
+  accent: "bg-accent text-text hover:bg-black hover:text-white",
   black: "bg-black text-white hover:bg-accent hover:text-text",
 };
 
@@ -100,6 +100,7 @@ export default function CmonDesignPage() {
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
+                  placeholderSrc={company.media.cover}
                 />
               </div>
             </div>
@@ -182,6 +183,7 @@ export default function CmonDesignPage() {
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-expertise.jpg"
                 />
               </div>
             </div>
@@ -250,6 +252,7 @@ export default function CmonDesignPage() {
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-reliability.jpg"
                 />
               </div>
             </div>
