@@ -31,6 +31,16 @@ interface CompanyContent {
     description: string;
     benefits: string[];
   };
+  section4: {
+    title: string;
+    description: string;
+    features: string[];
+  };
+  section5: {
+    title: string;
+    description: string;
+    highlights: string[];
+  };
   cta: {
     heading: string;
     description: string;
@@ -46,6 +56,10 @@ interface CompanyImages {
   section2Alt: string;
   section3Src: string;
   section3Alt: string;
+  section4Src: string;
+  section4Alt: string;
+  section5Src: string;
+  section5Alt: string;
 }
 
 interface ContentContextType {

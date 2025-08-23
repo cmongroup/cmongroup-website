@@ -241,6 +241,92 @@ export default function CmonDesignPage() {
               </div>
             </div>
           </article>
+
+          {/* Section 4: Our Process - Right */}
+          <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="cmon-design"
+                  path="section4Src"
+                  src={
+                    images?.section4Src || "/images/placeholder-process.jpg"
+                  }
+                  alt={
+                    images?.section4Alt || "Design process workflow"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-process.jpg"
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="cmon-design" path="section4.title">
+                    {content?.section4?.title || "Our Process"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section4.description"
+                  >
+                    {content?.section4?.description ||
+                      "We follow a proven design methodology that ensures every project delivers exceptional results. From initial concept to final implementation, our process is transparent, collaborative, and focused on your success."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 5: Client Success - Left */}
+          <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="cmon-design"
+                  path="section5Src"
+                  src={
+                    images?.section5Src || "/images/placeholder-success.jpg"
+                  }
+                  alt={
+                    images?.section5Alt || "Client success stories"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-success.jpg"
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="cmon-design" path="section5.title">
+                    {content?.section5?.title || "Client Success"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section5.description"
+                  >
+                    {content?.section5?.description ||
+                      "Our track record speaks for itself. We've helped numerous clients transform their digital presence and achieve remarkable business results through thoughtful design and strategic implementation."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
         </div>
 
         {/* CTA Section */}

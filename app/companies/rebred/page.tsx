@@ -201,7 +201,9 @@ export default function RebredPage() {
                   src={
                     images?.section3Src || "/images/placeholder-reliability.jpg"
                   }
-                  alt={images?.section3Alt || "Strategic brand development"}
+                  alt={
+                    images?.section3Alt || "Strategic brand development"
+                  }
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -225,6 +227,92 @@ export default function RebredPage() {
                   >
                     {content?.section3?.description ||
                       "Our F&B branding team brings deep industry knowledge and proven methodologies to every project. We understand the unique challenges of the food service industry and create solutions that not only look great but drive measurable business outcomes."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 4: Brand Strategy - Right */}
+          <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="rebred"
+                  path="section4Src"
+                  src={
+                    images?.section4Src || "/images/placeholder-strategy.jpg"
+                  }
+                  alt={
+                    images?.section4Alt || "Brand strategy development"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-strategy.jpg"
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="rebred" path="section4.title">
+                    {content?.section4?.title || "Brand Strategy"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="rebred"
+                    path="section4.description"
+                  >
+                    {content?.section4?.description ||
+                      "We develop comprehensive brand strategies that position your F&B concept for success. Our approach combines market research, competitive analysis, and consumer insights to create compelling brand narratives that resonate with your target audience."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 5: Market Success - Left */}
+          <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="rebred"
+                  path="section5Src"
+                  src={
+                    images?.section5Src || "/images/placeholder-success.jpg"
+                  }
+                  alt={
+                    images?.section5Alt || "Market success and growth"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc="/images/placeholder-success.jpg"
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="rebred" path="section5.title">
+                    {content?.section5?.title || "Market Success"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="rebred"
+                    path="section5.description"
+                  >
+                    {content?.section5?.description ||
+                      "Our track record of successful F&B brand transformations speaks for itself. We've helped numerous concepts increase market share, improve customer loyalty, and achieve sustainable growth through strategic branding and marketing initiatives."}
                   </EditableText>
                 </p>
               </div>

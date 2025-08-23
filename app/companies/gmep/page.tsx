@@ -220,9 +220,98 @@ export default function GmepPage() {
                   </EditableText>
                 </h3>
                 <p className="text-muted leading-relaxed">
-                  <EditableText companySlug="gmep" path="section3.description">
+                  <EditableText
+                    companySlug="gmep"
+                    path="section3.description"
+                  >
                     {content?.section3?.description ||
                       "Our MEP team brings decades of combined experience in building systems engineering. We understand the critical importance of reliable, efficient systems and work closely with architects and contractors to ensure seamless integration and optimal performance."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 4: Quality Assurance - Right */}
+          <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="gmep"
+                  path="section4Src"
+                  src={
+                    images?.section4Src || "/images/placeholder-quality.jpg"
+                  }
+                  alt={
+                    images?.section4Alt || "Quality assurance and testing"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc={"/images/placeholder-quality.jpg"}
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="gmep" path="section4.title">
+                    {content?.section4?.title || "Quality Assurance"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="gmep"
+                    path="section4.description"
+                  >
+                    {content?.section4?.description ||
+                      "We maintain the highest standards of quality throughout every phase of our projects. Our rigorous testing and commissioning procedures ensure all systems meet or exceed industry standards and perform reliably for years to come."}
+                  </EditableText>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Section 5: Project Portfolio - Left */}
+          <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+            {/* Image Section */}
+            <div className="w-full lg:w-1/2">
+              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                <EditableImage
+                  companySlug="gmep"
+                  path="section5Src"
+                  src={
+                    images?.section5Src || "/images/placeholder-portfolio.jpg"
+                  }
+                  alt={
+                    images?.section5Alt || "Project portfolio showcase"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                  placeholderSrc={"/images/placeholder-portfolio.jpg"}
+                />
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="w-full lg:w-1/2 space-y-6">
+              <div className="space-y-4">
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="gmep" path="section5.title">
+                    {content?.section5?.title || "Project Portfolio"}
+                  </EditableText>
+                </h3>
+                <p className="text-muted leading-relaxed">
+                  <EditableText
+                    companySlug="gmep"
+                    path="section5.description"
+                  >
+                    {content?.section5?.description ||
+                      "Our diverse portfolio spans commercial, hospitality, and industrial projects. Each project demonstrates our commitment to excellence and our ability to deliver complex MEP solutions on time and within budget."}
                   </EditableText>
                 </p>
               </div>
