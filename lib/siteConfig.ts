@@ -98,15 +98,7 @@ export const siteConfig = {
       },
       nav: [
         { title: "Services", route: "/#services" },
-        {
-          title: "Companies",
-          route: "/#companies",
-          children: [
-            { title: "c mon design", route: "/companies/cmon-design" },
-            { title: "rebred", route: "/companies/rebred" },
-            { title: "GMEP", route: "/companies/gmep" },
-          ],
-        },
+        { title: "Companies", route: "/companies" },
         { title: "About", route: "/about" },
         { title: "Contact", route: "/contact" },
       ],
