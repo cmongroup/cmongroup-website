@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  devIndicators: false,
   // removed deprecated swcMinify option
-  output: 'standalone',
+  output: "standalone",
 };
 
 module.exports = nextConfig;

@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   const { header, footer, meta } = _siteConfigAlias.website;
   return (
-    <html lang="en" className="bg-background text-text">
+    <html lang="en" className="bg-background text-text" suppressHydrationWarning>
       <body className="min-h-screen font-body antialiased flex flex-col">
         <header
           className={`top-0 z-40 w-full ${header.style.sticky ? "sticky bg-background/70 backdrop-blur-sm" : ""} border-b border-black/5`}
