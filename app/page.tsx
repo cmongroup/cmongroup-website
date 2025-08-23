@@ -181,7 +181,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="space-y-16 md:space-y-32" role="main">
+    <main className="space-y-16" role="main">
       {/* Hero */}
       <section
         id={hero.id}
