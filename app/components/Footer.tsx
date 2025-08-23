@@ -8,20 +8,20 @@ import EditableFooterText from "@/app/components/EditableFooterText";
 export default function Footer() {
   const { footerContent, isLoading } = useContent();
   const [localLoading, setLocalLoading] = useState(false);
-  
+
   // Add timeout to prevent infinite loading
   useEffect(() => {
     if (isLoading) {
       const timer = setTimeout(() => {
         setLocalLoading(false);
       }, 10000); // 10 second timeout
-      
+
       return () => clearTimeout(timer);
     } else {
       setLocalLoading(false);
     }
   }, [isLoading]);
-  
+
   // Use local loading state to prevent getting stuck
   const isActuallyLoading = isLoading && localLoading;
 
@@ -279,6 +279,15 @@ export default function Footer() {
             </EditableFooterText>
           </p>
           <span className="opacity-60">c mon group</span>
+        </div>
+
+        <div className="sr-only">
+          <a
+            href="https://www.linkedin.com/company/wirestorm/"
+            aria-hidden="true"
+          >
+            Wirestorm Networks - IT Services and IT Consulting
+          </a>
         </div>
       </div>
     </footer>
