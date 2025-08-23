@@ -122,6 +122,8 @@ export default function HomePage() {
   // Slider logic for companies section (if presentation === 'slider')
   const [companyIndex, setCompanyIndex] = useState(0);
   const sliderHoverRef = useRef(false);
+  const manualNavigationRef = useRef(false);
+
   useEffect(() => {
     if (
       !companies?.presentation ||
@@ -130,22 +132,43 @@ export default function HomePage() {
     )
       return;
     if (prefersReducedMotion) return;
+
     const { intervalMs } = companies.animation;
     const id = setInterval(() => {
-      if (sliderHoverRef.current) return;
+      if (sliderHoverRef.current || manualNavigationRef.current) return;
       setCompanyIndex((i) => (i + 1) % companies.cards.length);
     }, intervalMs);
+
     return () => clearInterval(id);
   }, [companies, prefersReducedMotion]);
 
+  // Reset manual navigation flag after a delay
+  useEffect(() => {
+    if (manualNavigationRef.current) {
+      const timer = setTimeout(() => {
+        manualNavigationRef.current = false;
+      }, 3000); // Wait 3 seconds before resuming autoplay
+      return () => clearTimeout(timer);
+    }
+  }, [companyIndex]);
+
   function handlePrev() {
-    if (companies)
-      setCompanyIndex(
-        (i) => (i - 1 + companies.cards.length) % companies.cards.length
-      );
+    if (companies) {
+      manualNavigationRef.current = true;
+      setCompanyIndex((i) => {
+        const newIndex = i - 1;
+        return newIndex < 0 ? companies.cards.length - 1 : newIndex;
+      });
+    }
   }
   function handleNext() {
-    if (companies) setCompanyIndex((i) => (i + 1) % companies.cards.length);
+    if (companies) {
+      manualNavigationRef.current = true;
+      setCompanyIndex((i) => {
+        const newIndex = i + 1;
+        return newIndex >= companies.cards.length ? 0 : newIndex;
+      });
+    }
   }
   function handleKey(e: React.KeyboardEvent<HTMLDivElement>) {
     if (e.key === "ArrowLeft") {
@@ -325,15 +348,30 @@ export default function HomePage() {
                     const offset = (idx - companyIndex + total) % total;
                     const isActive = offset === 0;
 
-                    const position = isActive
-                      ? focusIndex
-                      : offset === 1
-                        ? focusIndex + 1
-                        : focusIndex - 1;
-                    const translateX = (position - focusIndex) * 65;
+                    // Calculate position based on offset from active card
+                    let position;
+                    if (offset === 0) {
+                      position = 0; // Active card in center
+                    } else if (offset === 1) {
+                      position = 1; // Next card to the right
+                    } else if (offset === total - 1) {
+                      position = -1; // Previous card to the left
+                    } else if (offset === 2) {
+                      position = 2; // Second card to the right
+                    } else if (offset === total - 2) {
+                      position = -2; // Second card to the left
+                    } else if (offset === 3) {
+                      position = 3; // Third card to the right
+                    } else if (offset === total - 3) {
+                      position = -3; // Third card to the left
+                    } else {
+                      position = 0; // Hide other cards
+                    }
+
+                    const translateX = position * 65;
                     const cardScale = isActive ? scale.active : scale.inactive;
                     const z = isActive ? depth.activeZ : depth.inactiveZ;
-                    const hidden = offset > 2;
+                    const hidden = Math.abs(position) > 3;
 
                     return (
                       <motion.article
@@ -345,7 +383,7 @@ export default function HomePage() {
                           scale: cardScale,
                           z: z,
                           opacity: hidden ? 0 : 1,
-                          zIndex: isActive ? 30 : 10 - offset,
+                          zIndex: isActive ? 30 : 25 - Math.abs(position),
                         }}
                         transition={{
                           duration: transition.durationMs / 1000,
