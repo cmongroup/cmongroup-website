@@ -206,7 +206,7 @@ export default function HomePage() {
           className="space-y-6"
           aria-labelledby="companies-heading"
         >
-          <header className="space-y-4 max-w-3xl text-center mx-auto mb-8">
+          <header className="space-y-4 max-w-3xl text-center mx-auto mb-4">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
               Our Companies
@@ -224,7 +224,7 @@ export default function HomePage() {
 
           {/* Navigation Controls - Positioned below header */}
           {companies.presentation === "slider" && (
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-4">
               <div
                 className="hidden md:flex gap-3"
                 aria-label="Slider controls"
@@ -406,27 +406,6 @@ export default function HomePage() {
                   })}
                   <div className="invisible w-[400px] h-[800px]"></div>
                 </div>
-              </div>
-
-              {/* Pagination Dots */}
-              <div
-                className="flex justify-center gap-2"
-                aria-label="Company slider pagination"
-                role="tablist"
-              >
-                {companies.cards.map((_, i) => {
-                  const active = i === companyIndex;
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => setCompanyIndex(i)}
-                      aria-label={`Go to slide ${i + 1}`}
-                      aria-selected={active}
-                      role="tab"
-                      className={`h-2 w-2 rounded-full transition-colors ${active ? "bg-accent" : "bg-black/20 hover:bg-black/40"}`}
-                    />
-                  );
-                })}
               </div>
 
               <div
