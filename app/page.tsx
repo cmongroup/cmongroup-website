@@ -162,12 +162,12 @@ export default function HomePage() {
       {/* Hero */}
       <section
         id={hero.id}
-        className="grid gap-6 md:gap-10 md:grid-cols-2 items-center text-center md:text-left max-w-7xl mx-auto px-8"
+        className="grid gap-6 md:gap-10 md:grid-cols-2 items-start text-center md:text-left max-w-7xl mx-auto px-8"
       >
         <div className="space-y-6">
           {hero.left.eyebrow && (
             <div
-              className="text-[11px] uppercase tracking-[0.25em] font-semibold text-accent"
+              className="text-[24px] uppercase tracking-[0.25em] font-semibold text-accent"
               aria-label="Brand eyebrow"
             >
               {hero.left.eyebrow.text}
@@ -186,7 +186,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="relative flex justify-center md:justify-end">
-          <div className="relative shadow-soft ring-1 ring-black/5 bg-surface rounded-full overflow-hidden mx-auto w-64 h-[400px] md:w-[480px] md:h-[700px]">
+          <div className="relative shadow-soft ring-1 ring-black/5 bg-surface rounded-full overflow-hidden mx-auto w-64 h-[400px] md:w-[400px] md:h-[600px]">
             <Image
               src={hero.right.image.src}
               alt={hero.right.image.alt}
