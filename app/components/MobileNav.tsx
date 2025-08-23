@@ -17,7 +17,19 @@ interface Header {
   };
 }
 
-export default function MobileNav({ header }: { header: Header }) {
+interface MobileNavProps {
+  header: Header;
+  onLoginClick: () => void;
+  isAdmin: boolean;
+  onLogout: () => Promise<void>;
+}
+
+export default function MobileNav({
+  header,
+  onLoginClick,
+  isAdmin,
+  onLogout,
+}: MobileNavProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -166,15 +178,38 @@ export default function MobileNav({ header }: { header: Header }) {
 
           {/* CTA Section */}
           <div className="p-6 border-t border-accent/20 bg-accent/5">
-            <div className="text-center">
-              <p className="text-sm text-muted mb-3">Ready to get started?</p>
-              <Link
-                href={header.cta.route}
-                onClick={() => setIsOpen(false)}
-                className="block w-full bg-accent text-text font-medium py-3 px-6 rounded-2xl hover:bg-accent-dark transition-colors shadow-sm"
-              >
-                {header.cta.title}
-              </Link>
+            <div className="text-center space-y-3">
+              {isAdmin ? (
+                <button
+                  onClick={() => {
+                    onLogout();
+                    setIsOpen(false);
+                  }}
+                  className="block w-full border border-accent/20 bg-accent/5 text-accent font-medium py-3 px-6 rounded-2xl hover:bg-accent hover:text-text transition-colors"
+                >
+                  Exit Admin
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    onLoginClick();
+                    setIsOpen(false);
+                  }}
+                  className="hidden md:block w-full border border-accent/20 bg-accent/5 text-accent font-medium py-3 px-2 rounded-2xl hover:bg-accent hover:text-text transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
+              <div>
+                <p className="text-sm text-muted mb-3">Ready to get started?</p>
+                <Link
+                  href={header.cta.route}
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full bg-accent text-text font-medium py-3 px-6 rounded-2xl hover:bg-accent-dark transition-colors shadow-sm"
+                >
+                  {header.cta.title}
+                </Link>
+              </div>
             </div>
           </div>
         </div>

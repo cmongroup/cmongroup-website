@@ -1,5 +1,9 @@
+"use client";
 import { siteConfig } from "@/lib/siteConfig";
 import Link from "next/link";
+import { useContent } from "@/app/contexts/ContentContext";
+import EditableText from "@/app/components/EditableText";
+import EditableImage from "@/app/components/EditableImage";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -14,7 +18,7 @@ const buttonBase =
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-black text-white hover:bg-accent hover:text-text",
   ghost: "border border-text/60 text-text hover:bg-text hover:text-white",
-  accent: "bg-accent text-text hover:bg-black hover:text-white",
+  accent: "bg-accent text-text hover:bg-black hover:text-text",
   black: "bg-black text-white hover:bg-accent hover:text-text",
 };
 
@@ -34,9 +38,28 @@ export default function GmepPage() {
     .find((section) => section.type === "cards-grid")
     ?.cards.find((card) => card.slug === "gmep");
 
+  const { companyContent, companyImages, isLoading } = useContent();
+
   if (!company) {
     return <div>Company not found</div>;
   }
+
+  // Show loading state while content is being fetched
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-accent/20 border-t-accent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted">Loading content...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  const content = companyContent?.gmep;
+  const images = companyImages?.gmep;
 
   return (
     <main className="min-h-screen bg-background">
@@ -45,17 +68,20 @@ export default function GmepPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            {company.tagline}
+            <EditableText companySlug="gmep" path="tagline">
+              {content?.tagline || company.tagline}
+            </EditableText>
           </div>
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
-            {company.brand.name}
+            <EditableText companySlug="gmep" path="companyName">
+              {content?.companyName || company.brand.name}
+            </EditableText>
           </h1>
           <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
-            Precision engineering meets practical execution. Our MEP specialists
-            ensure building systems work seamlessly together, from HVAC
-            optimization to smart building integration. We handle complex
-            technical challenges while maintaining focus on energy efficiency,
-            sustainability, and long-term reliability.
+            <EditableText companySlug="gmep" path="description">
+              {content?.description ||
+                "Precision engineering meets practical execution. Our MEP specialists ensure building systems work seamlessly together, from HVAC optimization to smart building integration. We handle complex technical challenges while maintaining focus on energy efficiency, sustainability, and long-term reliability."}
+            </EditableText>
           </p>
         </div>
 
@@ -66,9 +92,13 @@ export default function GmepPage() {
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <img
-                  src={company.media.cover}
-                  alt={company.media.alt}
+                <EditableImage
+                  companySlug="gmep"
+                  path="section1Src"
+                  src={images?.section1Src || company.media.cover}
+                  alt={images?.section1Alt || company.media.alt}
+                  width={600}
+                  height={450}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -79,30 +109,43 @@ export default function GmepPage() {
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                  {company.tagline}
+                  <EditableText companySlug="gmep" path="tagline">
+                    {content?.tagline || company.tagline}
+                  </EditableText>
                 </div>
                 <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
-                  Electromechanical Services
+                  <EditableText companySlug="gmep" path="section1.title">
+                    {content?.section1?.title || "Electromechanical Services"}
+                  </EditableText>
                 </h2>
                 <p className="text-lg text-muted leading-relaxed">
-                  {company.summary}
+                  <EditableText companySlug="gmep" path="section1.summary">
+                    {content?.section1?.summary || company.summary}
+                  </EditableText>
                 </p>
                 <p className="text-muted leading-relaxed">
-                  Precision engineering meets practical execution. Our MEP
-                  specialists ensure building systems work seamlessly together,
-                  from HVAC optimization to smart building integration. We
-                  handle complex technical challenges while maintaining focus on
-                  energy efficiency, sustainability, and long-term reliability.
+                  <EditableText companySlug="gmep" path="section1.summary">
+                    {content?.section1?.summary ||
+                      "Precision engineering meets practical execution. Our MEP specialists ensure building systems work seamlessly together, from HVAC optimization to smart building integration. We handle complex technical challenges while maintaining focus on energy efficiency, sustainability, and long-term reliability."}
+                  </EditableText>
                 </p>
               </div>
 
               {/* Services Description */}
               <div className="space-y-3">
                 <h3 className="font-medium text-text text-sm uppercase tracking-wide">
-                  What we deliver
+                  <EditableText
+                    companySlug="gmep"
+                    path="section1.servicesLabel"
+                  >
+                    {content?.section1?.servicesLabel || "What we deliver"}
+                  </EditableText>
                 </h3>
                 <p className="text-muted leading-relaxed">
-                  {company.services.join(", ")}.
+                  <EditableText companySlug="gmep" path="section1.services">
+                    {content?.section1?.services || company.services.join(", ")}
+                  </EditableText>
+                  .
                 </p>
               </div>
 
@@ -120,44 +163,60 @@ export default function GmepPage() {
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto bg-accent/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <h3 className="font-heading text-2xl text-text">Technical Expertise</h3>
-                  </div>
-                </div>
+                <EditableImage
+                  companySlug="gmep"
+                  path="section2Src"
+                  src={
+                    images?.section2Src || "/images/placeholder-expertise.jpg"
+                  }
+                  alt={
+                    images?.section2Alt || "Technical expertise illustration"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-                <h3 className="font-heading text-2xl text-text">Our Expertise</h3>
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="gmep" path="section2.title">
+                    {content?.section2?.title || "Our Expertise"}
+                  </EditableText>
+                </h3>
                 <p className="text-muted leading-relaxed">
-                  We specialize in complex MEP systems for commercial,
-                  hospitality, and industrial projects. Our team combines deep
-                  technical knowledge with practical installation experience,
-                  ensuring every system is designed for optimal performance and
-                  maintainability.
+                  <EditableText companySlug="gmep" path="section2.description">
+                    {content?.section2?.description ||
+                      "We specialize in complex MEP systems for commercial, hospitality, and industrial projects. Our team combines deep technical knowledge with practical installation experience, ensuring every system is designed for optimal performance and maintainability."}
+                  </EditableText>
                 </p>
                 <ul className="space-y-2 text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>HVAC design and optimization</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Electrical and lighting systems</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Plumbing and fire protection</span>
-                  </li>
+                  {content?.section2?.expertisePoints?.map((point, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                      <span>
+                        <EditableText
+                          companySlug="gmep"
+                          path={`section2.expertisePoints.${index}`}
+                        >
+                          {point}
+                        </EditableText>
+                      </span>
+                    </li>
+                  )) ||
+                    [
+                      "HVAC design and optimization",
+                      "Electrical and lighting systems",
+                      "Plumbing and fire protection",
+                    ].map((point, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -168,43 +227,60 @@ export default function GmepPage() {
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto bg-accent/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
-                    </div>
-                    <h3 className="font-heading text-2xl text-text">Reliable Systems</h3>
-                  </div>
-                </div>
+                <EditableImage
+                  companySlug="gmep"
+                  path="section3Src"
+                  src={
+                    images?.section3Src || "/images/placeholder-reliability.jpg"
+                  }
+                  alt={
+                    images?.section3Alt || "Reliability and systems integration"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-                <h3 className="font-heading text-2xl text-text">Why Choose Us</h3>
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="gmep" path="section3.title">
+                    {content?.section3?.title || "Why Choose Us"}
+                  </EditableText>
+                </h3>
                 <p className="text-muted leading-relaxed">
-                  Our MEP team brings decades of combined experience in building
-                  systems engineering. We understand the critical importance of
-                  reliable, efficient systems and work closely with architects and
-                  contractors to ensure seamless integration and optimal
-                  performance.
+                  <EditableText companySlug="gmep" path="section3.description">
+                    {content?.section3?.description ||
+                      "Our MEP team brings decades of combined experience in building systems engineering. We understand the critical importance of reliable, efficient systems and work closely with architects and contractors to ensure seamless integration and optimal performance."}
+                  </EditableText>
                 </p>
                 <ul className="space-y-2 text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Comprehensive system integration</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Energy efficiency optimization</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Full commissioning and handover</span>
-                  </li>
+                  {content?.section3?.benefits?.map((benefit, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                      <span>
+                        <EditableText
+                          companySlug="gmep"
+                          path={`section3.benefits.${index}`}
+                        >
+                          {benefit}
+                        </EditableText>
+                      </span>
+                    </li>
+                  )) ||
+                    [
+                      "Comprehensive system integration",
+                      "Energy efficiency optimization",
+                      "Full commissioning and handover",
+                    ].map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -215,12 +291,15 @@ export default function GmepPage() {
         <div className="mt-24 text-center">
           <div className="bg-accent/10 rounded-3xl p-12 max-w-4xl mx-auto">
             <h2 className="font-heading text-3xl md:text-4xl mb-6">
-              Have a scope to price?
+              <EditableText companySlug="gmep" path="cta.heading">
+                {content?.cta?.heading || "Have a scope to price?"}
+              </EditableText>
             </h2>
             <p className="text-muted text-lg mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss your MEP requirements and explore how we can
-              deliver reliable, efficient building systems that meet your
-              project&apos;s technical and budgetary needs.
+              <EditableText companySlug="gmep" path="cta.description">
+                {content?.cta?.description ||
+                  "Let's discuss your MEP requirements and explore how we can deliver reliable, efficient building systems that meet your project's technical and budgetary needs."}
+              </EditableText>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button

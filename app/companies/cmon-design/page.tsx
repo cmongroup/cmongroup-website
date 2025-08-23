@@ -1,5 +1,9 @@
+"use client";
 import { siteConfig } from "@/lib/siteConfig";
 import Link from "next/link";
+import { useContent } from "@/app/contexts/ContentContext";
+import EditableText from "@/app/components/EditableText";
+import EditableImage from "@/app/components/EditableImage";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -14,7 +18,7 @@ const buttonBase =
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-black text-white hover:bg-accent hover:text-text",
   ghost: "border border-text/60 text-text hover:bg-text hover:text-white",
-  accent: "bg-accent text-text hover:bg-black hover:text-white",
+  accent: "bg-accent text-text hover:bg-black hover:text-text",
   black: "bg-black text-white hover:bg-accent hover:text-text",
 };
 
@@ -34,9 +38,28 @@ export default function CmonDesignPage() {
     .find((section) => section.type === "cards-grid")
     ?.cards.find((card) => card.slug === "cmon-design");
 
+  const { companyContent, companyImages, isLoading } = useContent();
+
   if (!company) {
     return <div>Company not found</div>;
   }
+
+  // Show loading state while content is being fetched
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-accent/20 border-t-accent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted">Loading content...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  const content = companyContent?.["cmon-design"];
+  const images = companyImages?.["cmon-design"];
 
   return (
     <main className="min-h-screen bg-background">
@@ -45,17 +68,20 @@ export default function CmonDesignPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            {company.tagline}
+            <EditableText companySlug="cmon-design" path="tagline">
+              {content?.tagline || company.tagline}
+            </EditableText>
           </div>
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
-            {company.brand.name}
+            <EditableText companySlug="cmon-design" path="companyName">
+              {content?.companyName || company.brand.name}
+            </EditableText>
           </h1>
           <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
-            From concept to completion, we transform spaces into experiences.
-            Our team combines creative vision with technical expertise,
-            delivering bespoke interior solutions that reflect your brand&apos;s
-            unique identity. We handle everything from initial sketches to final
-            installation, ensuring every detail meets our exacting standards.
+            <EditableText companySlug="cmon-design" path="description">
+              {content?.description ||
+                "We create exceptional digital experiences that combine beautiful design with powerful functionality. Our team specializes in user-centered design, modern development practices, and creating solutions that drive business results while delighting users."}
+            </EditableText>
           </p>
         </div>
 
@@ -66,9 +92,13 @@ export default function CmonDesignPage() {
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <img
-                  src={company.media.cover}
-                  alt={company.media.alt}
+                <EditableImage
+                  companySlug="cmon-design"
+                  path="section1Src"
+                  src={images?.section1Src || company.media.cover}
+                  alt={images?.section1Alt || company.media.alt}
+                  width={600}
+                  height={450}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -79,31 +109,52 @@ export default function CmonDesignPage() {
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                  {company.tagline}
+                  <EditableText companySlug="cmon-design" path="tagline">
+                    {content?.tagline || company.tagline}
+                  </EditableText>
                 </div>
                 <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
-                  Interior Design Studio
+                  <EditableText companySlug="cmon-design" path="section1.title">
+                    {content?.section1?.title || "Digital Design & Development"}
+                  </EditableText>
                 </h2>
                 <p className="text-lg text-muted leading-relaxed">
-                  {company.summary}
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section1.summary"
+                  >
+                    {content?.section1?.summary || company.summary}
+                  </EditableText>
                 </p>
                 <p className="text-muted leading-relaxed">
-                  From concept to completion, we transform spaces into
-                  experiences. Our team combines creative vision with technical
-                  expertise, delivering bespoke interior solutions that reflect
-                  your brand&apos;s unique identity. We handle everything from
-                  initial sketches to final installation, ensuring every detail
-                  meets our exacting standards.
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section1.summary"
+                  >
+                    {content?.section1?.summary ||
+                      "We create exceptional digital experiences that combine beautiful design with powerful functionality. Our team specializes in user-centered design, modern development practices, and creating solutions that drive business results while delighting users."}
+                  </EditableText>
                 </p>
               </div>
 
               {/* Services Description */}
               <div className="space-y-3">
                 <h3 className="font-medium text-text text-sm uppercase tracking-wide">
-                  What we deliver
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section1.servicesLabel"
+                  >
+                    {content?.section1?.servicesLabel || "What we deliver"}
+                  </EditableText>
                 </h3>
                 <p className="text-muted leading-relaxed">
-                  {company.services.join(", ")}.
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section1.services"
+                  >
+                    {content?.section1?.services || company.services.join(", ")}
+                  </EditableText>
+                  .
                 </p>
               </div>
 
@@ -116,48 +167,67 @@ export default function CmonDesignPage() {
             </div>
           </article>
 
-          {/* Section 2: Our Approach - Right */}
+          {/* Section 2: Our Expertise - Right */}
           <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto bg-accent/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
-                    </div>
-                    <h3 className="font-heading text-2xl text-text">Design Process</h3>
-                  </div>
-                </div>
+                <EditableImage
+                  companySlug="cmon-design"
+                  path="section2Src"
+                  src={
+                    images?.section2Src || "/images/placeholder-expertise.jpg"
+                  }
+                  alt={images?.section2Alt || "Digital expertise illustration"}
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-                <h3 className="font-heading text-2xl text-text">Our Approach</h3>
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="cmon-design" path="section2.title">
+                    {content?.section2?.title || "Our Expertise"}
+                  </EditableText>
+                </h3>
                 <p className="text-muted leading-relaxed">
-                  We believe great design is born from understanding. Every
-                  project begins with deep research into your brand, audience, and
-                  operational needs. This foundation informs our creative process,
-                  ensuring every design decision serves both aesthetic and
-                  functional goals.
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section2.description"
+                  >
+                    {content?.section2?.description ||
+                      "We specialize in creating digital products that users love and businesses rely on. Our team combines design thinking with technical excellence, ensuring every project delivers both beautiful aesthetics and powerful functionality."}
+                  </EditableText>
                 </p>
                 <ul className="space-y-2 text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Comprehensive space planning and optimization</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Custom furniture and fixture design</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Material selection and specification</span>
-                  </li>
+                  {content?.section2?.expertisePoints?.map((point, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                      <span>
+                        <EditableText
+                          companySlug="cmon-design"
+                          path={`section2.expertisePoints.${index}`}
+                        >
+                          {point}
+                        </EditableText>
+                      </span>
+                    </li>
+                  )) ||
+                    [
+                      "User experience design",
+                      "Visual design and branding",
+                      "Frontend development",
+                      "Digital strategy and consulting",
+                    ].map((point, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -168,43 +238,64 @@ export default function CmonDesignPage() {
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
               <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <div className="w-full h-full bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 mx-auto bg-accent/20 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <h3 className="font-heading text-2xl text-text">Expert Team</h3>
-                  </div>
-                </div>
+                <EditableImage
+                  companySlug="cmon-design"
+                  path="section3Src"
+                  src={
+                    images?.section3Src || "/images/placeholder-reliability.jpg"
+                  }
+                  alt={
+                    images?.section3Alt || "User-centered approach illustration"
+                  }
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-                <h3 className="font-heading text-2xl text-text">Why Choose Us</h3>
+                <h3 className="font-heading text-2xl text-text">
+                  <EditableText companySlug="cmon-design" path="section3.title">
+                    {content?.section3?.title || "Why Choose Us"}
+                  </EditableText>
+                </h3>
                 <p className="text-muted leading-relaxed">
-                  With over a decade of experience in hospitality and commercial
-                  design, we&apos;ve developed a proven methodology that balances
-                  creativity with practicality. Our team includes architects,
-                  interior designers, and project managers who work seamlessly
-                  together.
+                  <EditableText
+                    companySlug="cmon-design"
+                    path="section3.description"
+                  >
+                    {content?.section3?.description ||
+                      "Our digital design team brings together creativity, technical expertise, and business understanding. We create solutions that not only look stunning but also perform flawlessly and drive measurable business outcomes."}
+                  </EditableText>
                 </p>
                 <ul className="space-y-2 text-muted">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>End-to-end project management</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Proven track record in F&B and hospitality</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>Comprehensive post-completion support</span>
-                  </li>
+                  {content?.section3?.benefits?.map((benefit, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                      <span>
+                        <EditableText
+                          companySlug="cmon-design"
+                          path={`section3.benefits.${index}`}
+                        >
+                          {benefit}
+                        </EditableText>
+                      </span>
+                    </li>
+                  )) ||
+                    [
+                      "User-centered design approach",
+                      "Modern development practices",
+                      "Business-focused solutions",
+                      "Ongoing support and optimization",
+                    ].map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -215,24 +306,27 @@ export default function CmonDesignPage() {
         <div className="mt-24 text-center">
           <div className="bg-accent/10 rounded-3xl p-12 max-w-4xl mx-auto">
             <h2 className="font-heading text-3xl md:text-4xl mb-6">
-              Ready to transform your space?
+              <EditableText companySlug="cmon-design" path="cta.heading">
+                {content?.cta?.heading || "Need a digital solution?"}
+              </EditableText>
             </h2>
             <p className="text-muted text-lg mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss your project and explore how we can bring your
-              vision to life with our comprehensive interior design and
-              contracting services.
+              <EditableText companySlug="cmon-design" path="cta.description">
+                {content?.cta?.description ||
+                  "Let's discuss your digital needs and explore how we can create an exceptional user experience that drives business results."}
+              </EditableText>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 action={{
-                  title: "Book Consultation",
-                  route: "/book?team=cmon-design",
+                  title: "Request a Quote",
+                  route: "/contact?topic=cmon-design-quote",
                   variant: "primary",
                 }}
               />
               <Button
                 action={{
-                  title: "View Portfolio",
+                  title: "View Projects",
                   route: "/#companies",
                   variant: "ghost",
                 }}
