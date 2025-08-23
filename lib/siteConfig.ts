@@ -97,6 +97,7 @@ export const siteConfig = {
         route: "/",
       },
       nav: [
+        { title: "Home", route: "/" },
         { title: "Services", route: "/#services" },
         {
           title: "Companies",
