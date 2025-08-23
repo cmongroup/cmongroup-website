@@ -103,7 +103,9 @@ export default function EditableText({
   const Tag = tag as any;
   return (
     <Tag
-      className={`${className} ${isAdmin ? "cursor-pointer hover:bg-accent/30 hover:border-2 hover:border-accent/60 hover:shadow-md rounded px-2 py-1 -mx-2 -my-1 transition-all duration-200 relative group" : ""}`}
+      className={`${className} ${isAdmin ? "cursor-pointer hover:bg-accent/30 hover:border-2 hover:border-accent/60 hover:shadow-md rounded px-2 py-1 transition-all duration-200 relative group editable-text admin-editable" : ""}`}
+      data-editable={isAdmin ? "true" : "false"}
+      style={isAdmin ? { color: "var(--color-text)" } : undefined}
       onDoubleClick={handleDoubleClick}
       title={isAdmin ? "Double-click to edit" : undefined}
     >

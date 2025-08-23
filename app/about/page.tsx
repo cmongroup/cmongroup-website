@@ -1,13 +1,13 @@
+"use client";
+
 import { siteConfig as _cfg } from "@/lib/siteConfig";
 import Image from "next/image";
-
-export const metadata = {
-  title: "About — c mon group",
-  description:
-    "About c mon group: integrated interior design, F&B brand systems, and electromechanical services.",
-};
+import EditableWebsiteText from "@/app/components/EditableWebsiteText";
+import { useContent } from "@/app/contexts/ContentContext";
 
 export default function AboutPage() {
+  const { websiteContent } = useContent();
+
   return (
     <main className="min-h-screen bg-background relative">
       {/* Hero Section */}
@@ -27,11 +27,15 @@ export default function AboutPage() {
             </div>
             <div className="min-h-[1.2em] flex items-center justify-center">
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl tracking-tight bg-linear-to-r from-text via-text to-text/70 bg-clip-text text-transparent leading-[1.1] py-2">
-                About c mon group
+                <EditableWebsiteText path="about.hero.title">
+                  About c mon group
+                </EditableWebsiteText>
               </h1>
             </div>
             <p className="text-lg md:text-xl text-muted max-w-3xl mx-auto leading-relaxed">
-              {_cfg.website.meta.description}
+              <EditableWebsiteText path="about.hero.description">
+                {_cfg.website.meta.description}
+              </EditableWebsiteText>
             </p>
           </div>
 
@@ -40,17 +44,21 @@ export default function AboutPage() {
             <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-accent via-accent/80 to-accent/60"></div>
             <div className="text-center space-y-6">
               <h2 className="font-heading text-2xl md:text-3xl text-text">
-                Our Mission
+                <EditableWebsiteText path="about.mission.title">
+                  Our Mission
+                </EditableWebsiteText>
               </h2>
               <p className="text-base md:text-lg text-muted leading-relaxed max-w-4xl mx-auto">
-                We orchestrate{" "}
-                <strong className="text-text font-semibold">
-                  strategy, design, engineering and execution
-                </strong>{" "}
-                so clients move from idea to operating environment with one
-                accountable team. Our integrated model reduces handover
-                friction, accelerates timelines, and protects design & brand
-                intent through build.
+                <EditableWebsiteText path="about.mission.content">
+                  We orchestrate{" "}
+                  <strong className="text-text font-semibold">
+                    strategy, design, engineering and execution
+                  </strong>{" "}
+                  so clients move from idea to operating environment with one
+                  accountable team. Our integrated model reduces handover
+                  friction, accelerates timelines, and protects design & brand
+                  intent through build.
+                </EditableWebsiteText>
               </p>
             </div>
           </div>
@@ -66,11 +74,15 @@ export default function AboutPage() {
               Our Companies
             </div>
             <h2 className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent py-2">
-              Three specialist companies
+              <EditableWebsiteText path="about.companies.title">
+                Three specialist companies
+              </EditableWebsiteText>
             </h2>
             <p className="text-muted text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-              Each company brings specialized expertise while working seamlessly
-              together
+              <EditableWebsiteText path="about.companies.subtitle">
+                Each company brings specialized expertise while working
+                seamlessly together
+              </EditableWebsiteText>
             </p>
           </div>
 
@@ -146,13 +158,17 @@ export default function AboutPage() {
             </div>
 
             <h2 className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent py-2">
-              Why integrated?
+              <EditableWebsiteText path="about.approach.title">
+                Why integrated?
+              </EditableWebsiteText>
             </h2>
 
             <p className="text-lg md:text-xl text-muted leading-relaxed max-w-3xl mx-auto">
-              Alignment across branding, spatial design, and
-              mechanical/electrical decisions preserves narrative clarity while
-              ensuring build feasibility and operational performance.
+              <EditableWebsiteText path="about.approach.subtitle">
+                Alignment across branding, spatial design, and
+                mechanical/electrical decisions preserves narrative clarity
+                while ensuring build feasibility and operational performance.
+              </EditableWebsiteText>
             </p>
 
             {/* Enhanced Benefits Grid */}
@@ -162,10 +178,14 @@ export default function AboutPage() {
                   <span className="text-2xl">🎯</span>
                 </div>
                 <h3 className="font-heading text-lg text-text">
-                  Seamless Coordination
+                  <EditableWebsiteText path="about.approach.benefits.0.title">
+                    Seamless Coordination
+                  </EditableWebsiteText>
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  All disciplines work together from concept to completion
+                  <EditableWebsiteText path="about.approach.benefits.0.description">
+                    All disciplines work together from concept to completion
+                  </EditableWebsiteText>
                 </p>
               </div>
 
@@ -174,10 +194,14 @@ export default function AboutPage() {
                   <span className="text-2xl">⚡</span>
                 </div>
                 <h3 className="font-heading text-lg text-text">
-                  Faster Delivery
+                  <EditableWebsiteText path="about.approach.benefits.1.title">
+                    Faster Delivery
+                  </EditableWebsiteText>
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  Reduced handover friction accelerates project timelines
+                  <EditableWebsiteText path="about.approach.benefits.1.description">
+                    Reduced handover friction accelerates project timelines
+                  </EditableWebsiteText>
                 </p>
               </div>
 
@@ -186,10 +210,14 @@ export default function AboutPage() {
                   <span className="text-2xl">🛡️</span>
                 </div>
                 <h3 className="font-heading text-lg text-text">
-                  Design Integrity
+                  <EditableWebsiteText path="about.approach.benefits.2.title">
+                    Design Integrity
+                  </EditableWebsiteText>
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  Brand and design intent preserved through construction
+                  <EditableWebsiteText path="about.approach.benefits.2.description">
+                    Brand and design intent preserved through construction
+                  </EditableWebsiteText>
                 </p>
               </div>
             </div>

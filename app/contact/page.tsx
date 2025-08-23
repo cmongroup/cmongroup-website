@@ -1,9 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import EditableWebsiteText from "@/app/components/EditableWebsiteText";
+import { useContent } from "@/app/contexts/ContentContext";
 
-export default function ContactPage() {
+function ContactForm() {
   const searchParams = useSearchParams();
+  const { websiteContent } = useContent();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -89,14 +92,20 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            Get in Touch
+            <EditableWebsiteText path="contact.hero.eyebrow">
+              Get in Touch
+            </EditableWebsiteText>
           </div>
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
-            Let&apos;s discuss your project
+            <EditableWebsiteText path="contact.hero.title">
+              Let&apos;s discuss your project
+            </EditableWebsiteText>
           </h1>
           <p className="text-lg text-muted max-w-2xl mx-auto leading-relaxed">
-            Whether you need interior design, F&B branding, or MEP services,
-            we&apos;re here to help bring your vision to life.
+            <EditableWebsiteText path="contact.hero.subtitle">
+              Whether you need interior design, F&B branding, or MEP services,
+              we&apos;re here to help bring your vision to life.
+            </EditableWebsiteText>
           </p>
         </div>
 
@@ -240,7 +249,11 @@ export default function ContactPage() {
 
           {/* Contact Info Sidebar */}
           <div className="bg-surface rounded-3xl p-8 shadow-soft ring-1 ring-black/5">
-            <h3 className="font-heading text-2xl mb-6">Contact Information</h3>
+            <h3 className="font-heading text-2xl mb-6">
+              <EditableWebsiteText path="contact.sidebar.title">
+                Contact Information
+              </EditableWebsiteText>
+            </h3>
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-muted mb-1">Email</p>
@@ -248,7 +261,9 @@ export default function ContactPage() {
                   href="mailto:hello@cmon.group"
                   className="text-text hover:text-accent transition-colors duration-200"
                 >
-                  hello@cmon.group
+                  <EditableWebsiteText path="contact.sidebar.email">
+                    hello@cmon.group
+                  </EditableWebsiteText>
                 </a>
               </div>
               <div>
@@ -257,17 +272,40 @@ export default function ContactPage() {
                   href="tel:+96100000000"
                   className="text-text hover:text-accent transition-colors duration-200"
                 >
-                  +961 00 000 000
+                  <EditableWebsiteText path="contact.sidebar.phone">
+                    +961 00 000 000
+                  </EditableWebsiteText>
                 </a>
               </div>
               <div>
                 <p className="text-sm text-muted mb-1">Location</p>
-                <p className="text-text">Beirut, Lebanon</p>
+                <p className="text-text">
+                  <EditableWebsiteText path="contact.sidebar.location">
+                    Beirut, Lebanon
+                  </EditableWebsiteText>
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+            <p className="text-muted">Loading contact form...</p>
+          </div>
+        </div>
+      }
+    >
+      <ContactForm />
+    </Suspense>
   );
 }

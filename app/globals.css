@@ -119,6 +119,90 @@ html {
   outline-offset: 2px;
 }
 
+/* Ensure editable text maintains visibility in admin mode */
+[data-editable="true"],
+.editable-text {
+  color: inherit !important;
+}
+
+/* Admin mode text visibility fixes */
+.admin-editable {
+  color: var(--color-text) !important;
+}
+
+/* More specific rules to ensure text visibility */
+[data-editable="true"] *,
+.editable-text *,
+.admin-editable * {
+  color: inherit !important;
+}
+
+/* Ensure text color is preserved even with hover states */
+[data-editable="true"]:hover,
+.editable-text:hover,
+.admin-editable:hover {
+  color: var(--color-text) !important;
+}
+
+/* Override any conflicting Tailwind utilities with maximum specificity */
+[data-editable="true"].text-white,
+[data-editable="true"].text-gray-900,
+[data-editable="true"].text-text,
+.editable-text.text-white,
+.editable-text.text-gray-900,
+.editable-text.text-text,
+.admin-editable.text-white,
+.admin-editable.text-gray-900,
+.admin-editable.text-text {
+  color: var(--color-text) !important;
+}
+
+/* Ensure text color is preserved in all states */
+[data-editable="true"]:hover.text-white,
+[data-editable="true"]:hover.text-gray-900,
+[data-editable="true"]:hover.text-text,
+.editable-text:hover.text-white,
+.editable-text:hover.text-gray-900,
+.editable-text:hover.text-text,
+.admin-editable:hover.text-white,
+.admin-editable:hover.text-gray-900,
+.admin-editable:hover.text-text {
+  color: var(--color-text) !important;
+}
+
+/* Override parent element text colors for editable elements */
+[data-editable="true"],
+.editable-text,
+.admin-editable {
+  color: var(--color-text) !important;
+}
+
+/* Ensure text color is preserved even when parent has conflicting styles */
+.text-accent [data-editable="true"],
+.text-accent .editable-text,
+.text-accent .admin-editable,
+.text-muted [data-editable="true"],
+.text-muted .editable-text,
+.text-muted .admin-editable,
+.text-text [data-editable="true"],
+.text-text .editable-text,
+.text-text .admin-editable {
+  color: var(--color-text) !important;
+}
+
+/* Fallback text colors for editable elements */
+[data-editable="true"] {
+  color: #0e0e0e !important; /* Fallback to explicit color */
+}
+
+.editable-text {
+  color: #0e0e0e !important; /* Fallback to explicit color */
+}
+
+.admin-editable {
+  color: #0e0e0e !important; /* Fallback to explicit color */
+}
+
 /* Utility to gently fade edges of horizontal carousels */
 .edge-fade {
   position: relative;

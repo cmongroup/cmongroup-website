@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import EditableWebsiteText from "@/app/components/EditableWebsiteText";
+import EditableWebsiteImage from "@/app/components/EditableWebsiteImage";
+import { useContent } from "@/app/contexts/ContentContext";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -97,6 +100,20 @@ function usePrefersReducedMotion() {
 
 export default function HomePage() {
   const { hero, sections } = siteConfig.website;
+  const { websiteContent, websiteImages, isLoading } = useContent();
+
+  // All React hooks must be called before any conditional returns
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const isSmall = useMediaQuery("(max-width: 1023px)");
+
+  // Slider logic for companies section (if presentation === 'slider')
+  const [companyIndex, setCompanyIndex] = useState(0);
+  const sliderHoverRef = useRef(false);
+  const manualNavigationRef = useRef(false);
+
+  // Use dynamic content from Firebase if available, fallback to static config
+  const dynamicHero = websiteContent?.home?.hero || hero;
+  const dynamicSections = websiteContent?.home?.sections || sections;
 
   // Index sections once (performance + clarity)
   const { companies, servicesTabs, ctaBand } = useMemo(() => {
@@ -106,7 +123,7 @@ export default function HomePage() {
       ctaBand?: CtaBandSection;
     } = {};
     // Fix readonly conversion by using unknown intermediate type
-    const sectionsArray = sections as unknown as readonly AnySection[];
+    const sectionsArray = dynamicSections as unknown as readonly AnySection[];
     for (const s of sectionsArray) {
       if (s.type === "cards-grid") out.companies = s as CompaniesSection;
       else if (s.type === "tabs") out.servicesTabs = s;
@@ -114,16 +131,9 @@ export default function HomePage() {
         out.ctaBand = s as CtaBandSection;
     }
     return out;
-  }, [sections]);
-
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const isSmall = useMediaQuery("(max-width: 1023px)");
+  }, [dynamicSections]);
 
   // Slider logic for companies section (if presentation === 'slider')
-  const [companyIndex, setCompanyIndex] = useState(0);
-  const sliderHoverRef = useRef(false);
-  const manualNavigationRef = useRef(false);
-
   useEffect(() => {
     if (
       !companies?.presentation ||
@@ -151,6 +161,18 @@ export default function HomePage() {
       return () => clearTimeout(timer);
     }
   }, [companyIndex]);
+
+  // Show loading state while content is being fetched
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-muted">Loading content...</p>
+        </div>
+      </div>
+    );
+  }
 
   function handlePrev() {
     if (companies) {
@@ -184,38 +206,47 @@ export default function HomePage() {
     <main className="space-y-16" role="main">
       {/* Hero */}
       <section
-        id={hero.id}
+        id={dynamicHero.id}
         className="grid gap-6 md:gap-10 md:grid-cols-2 items-start text-center md:text-left max-w-7xl mx-auto px-8"
       >
         <div className="space-y-6">
-          {hero.left.eyebrow && (
+          {dynamicHero.left?.eyebrow && (
             <div
               className="text-[24px] uppercase tracking-[0.25em] font-semibold text-accent"
               aria-label="Brand eyebrow"
             >
-              {hero.left.eyebrow.text}
+              <EditableWebsiteText path="home.hero.left.eyebrow.text">
+                {dynamicHero.left.eyebrow.text}
+              </EditableWebsiteText>
             </div>
           )}
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight">
-            {hero.left.heading}
+            <EditableWebsiteText path="home.hero.left.heading">
+              {dynamicHero.left?.heading}
+            </EditableWebsiteText>
           </h1>
           <p className="text-sm md:text-base text-muted max-w-prose leading-relaxed text-center md:text-left mx-auto md:mx-0">
-            {hero.left.subtext}
+            <EditableWebsiteText path="home.hero.left.subtext">
+              {dynamicHero.left?.subtext}
+            </EditableWebsiteText>
           </p>
           <div className="flex flex-wrap gap-4 pt-2 justify-center md:justify-start">
-            {hero.left.actions.map((a) => (
+            {dynamicHero.left?.actions?.map((a: any) => (
               <Button key={a.title} action={a as Action} />
             ))}
           </div>
         </div>
         <div className="relative flex justify-center md:justify-end">
           <div className="relative shadow-soft ring-1 ring-black/5 bg-surface rounded-full overflow-hidden mx-auto w-64 h-[400px] md:w-[400px] md:h-[600px]">
-            <Image
-              src={hero.right.image.src}
-              alt={hero.right.image.alt}
-              fill
+            <EditableWebsiteImage
+              path="home.hero.right.image.src"
+              src={
+                dynamicHero.right?.image?.src || "/images/hero/hero-main.jpeg"
+              }
+              alt={dynamicHero.right?.image?.alt || "Hero image"}
+              width={400}
+              height={600}
               className="object-cover"
-              sizes="(min-width:768px) 50vw, 100vw"
               priority
             />
           </div>
@@ -238,10 +269,15 @@ export default function HomePage() {
               id="companies-heading"
               className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
             >
-              {companies.title}
+              <EditableWebsiteText path="home.companies.title">
+                {websiteContent?.home?.companies?.title || companies.title}
+              </EditableWebsiteText>
             </h2>
             <p className="text-muted text-base md:text-lg leading-relaxed">
-              Discover our portfolio of innovative businesses
+              <EditableWebsiteText path="home.companies.subtitle">
+                {websiteContent?.home?.companies?.subtitle ||
+                  "Discover our portfolio of innovative businesses"}
+              </EditableWebsiteText>
             </p>
           </header>
 
@@ -525,10 +561,15 @@ export default function HomePage() {
               id="services-heading"
               className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
             >
-              {servicesTabs.title}
+              <EditableWebsiteText path="home.services.title">
+                {websiteContent?.home?.services?.title || servicesTabs.title}
+              </EditableWebsiteText>
             </h2>
             <p className="text-muted text-base md:text-lg leading-relaxed">
-              Comprehensive solutions tailored to your business needs
+              <EditableWebsiteText path="home.services.subtitle">
+                {websiteContent?.home?.services?.subtitle ||
+                  "Comprehensive solutions tailored to your business needs"}
+              </EditableWebsiteText>
             </p>
           </header>
           <div className="grid gap-6 md:gap-8 lg:grid-cols-3 max-w-7xl mx-auto px-8">
@@ -589,10 +630,14 @@ export default function HomePage() {
               id="cta-heading"
               className="font-heading text-3xl md:text-5xl leading-tight"
             >
-              {ctaBand.heading}
+              <EditableWebsiteText path="home.cta.heading">
+                {websiteContent?.home?.cta?.heading || ctaBand.heading}
+              </EditableWebsiteText>
             </h2>
             <p className="text-sm md:text-base max-w-prose leading-relaxed">
-              {ctaBand.text}
+              <EditableWebsiteText path="home.cta.text">
+                {websiteContent?.home?.cta?.text || ctaBand.text}
+              </EditableWebsiteText>
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">

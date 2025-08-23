@@ -48,11 +48,11 @@ interface CompanyImages {
   section3Alt: string;
 }
 
-
-
 interface ContentContextType {
   companyContent: Record<string, CompanyContent> | null;
   companyImages: Record<string, CompanyImages> | null;
+  websiteContent: any | null;
+  websiteImages: any | null;
   isLoading: boolean;
   updateCompanyText: (
     companySlug: string,
@@ -64,6 +64,8 @@ interface ContentContextType {
     path: string,
     value: string
   ) => Promise<void>;
+  updateWebsiteText: (path: string, value: string | string[]) => Promise<void>;
+  updateWebsiteImage: (path: string, value: string) => Promise<void>;
 }
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
@@ -77,72 +79,108 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     string,
     CompanyImages
   > | null>(null);
+  const [websiteContent, setWebsiteContent] = useState<any | null>(null);
+  const [websiteImages, setWebsiteImages] = useState<any | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const db = getFirestore(app);
 
-    // Function to fetch all company data
-    const fetchCompanyData = async () => {
+    // Function to fetch all data
+    const fetchAllData = async () => {
       try {
         const [
-          contentSnapshot,
-          imagesSnapshot,
+          companyContentSnapshot,
+          companyImagesSnapshot,
+          websiteContentSnapshot,
+          websiteImagesSnapshot,
         ] = await Promise.all([
           getDocs(collection(db, "companyContent")),
           getDocs(collection(db, "companyImages")),
+          getDocs(collection(db, "websiteContent")),
+          getDocs(collection(db, "websiteImages")),
         ]);
 
-        const content: Record<string, CompanyContent> = {};
-        const images: Record<string, CompanyImages> = {};
+        const companyContent: Record<string, CompanyContent> = {};
+        const companyImages: Record<string, CompanyImages> = {};
 
-        contentSnapshot.forEach((doc) => {
-          content[doc.id] = doc.data() as CompanyContent;
+        companyContentSnapshot.forEach((doc) => {
+          companyContent[doc.id] = doc.data() as CompanyContent;
         });
 
-        imagesSnapshot.forEach((doc) => {
-          images[doc.id] = doc.data() as CompanyImages;
+        companyImagesSnapshot.forEach((doc) => {
+          companyImages[doc.id] = doc.data() as CompanyImages;
         });
 
-        setCompanyContent(content);
-        setCompanyImages(images);
+        // Get website content and images
+        const websiteContent = websiteContentSnapshot.docs[0]?.data() || null;
+        const websiteImages = websiteImagesSnapshot.docs[0]?.data() || null;
+
+        setCompanyContent(companyContent);
+        setCompanyImages(companyImages);
+        setWebsiteContent(websiteContent);
+        setWebsiteImages(websiteImages);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching company data:", error);
+        console.error("Error fetching data:", error);
         setIsLoading(false);
       }
     };
 
     // Initial fetch
-    fetchCompanyData();
+    fetchAllData();
 
-    // Listen to changes on all companies to trigger updates
-    const unsubscribeContent = onSnapshot(
+    // Listen to changes on all collections to trigger updates
+    const unsubscribeCompanyContent = onSnapshot(
       collection(db, "companyContent"),
       () => {
         // Refetch all data when any company changes
-        fetchCompanyData();
+        fetchAllData();
       },
       (error) => {
-        console.error("Error listening to content changes:", error);
+        console.error("Error listening to company content changes:", error);
       }
     );
 
-    const unsubscribeImages = onSnapshot(
+    const unsubscribeCompanyImages = onSnapshot(
       collection(db, "companyImages"),
       () => {
         // Refetch all data when any company images change
-        fetchCompanyData();
+        fetchAllData();
       },
       (error) => {
-        console.error("Error listening to image changes:", error);
+        console.error("Error listening to company image changes:", error);
+      }
+    );
+
+    const unsubscribeWebsiteContent = onSnapshot(
+      collection(db, "websiteContent"),
+      () => {
+        // Refetch all data when website content changes
+        fetchAllData();
+      },
+      (error) => {
+        console.error("Error listening to website content changes:", error);
+      }
+    );
+
+    const unsubscribeWebsiteImages = onSnapshot(
+      collection(db, "websiteImages"),
+      () => {
+        // Refetch all data when website images change
+        fetchAllData();
+      },
+      (error) => {
+        console.error("Error listening to website image changes:", error);
       }
     );
 
     return () => {
-      unsubscribeContent();
-      unsubscribeImages();
+      unsubscribeCompanyContent();
+      unsubscribeCompanyImages();
+      unsubscribeWebsiteContent();
+      unsubscribeWebsiteImages();
     };
   }, []);
 
@@ -155,17 +193,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
       const db = getFirestore(app);
       const companyRef = doc(db, "companyContent", companySlug);
 
-      // Handle nested path updates
-      const pathParts = path.split(".");
-      const updateData: any = {};
-      let current = updateData;
-
-      for (let i = 0; i < pathParts.length - 1; i++) {
-        current[pathParts[i]] = {};
-        current = current[pathParts[i]];
-      }
-      current[pathParts[pathParts.length - 1]] = value;
-
+      // Use dot notation for nested updates
+      const updateData = { [path]: value };
       await updateDoc(companyRef, updateData);
     } catch (error) {
       console.error("Error updating company text:", error);
@@ -191,16 +220,46 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateWebsiteText = async (path: string, value: string | string[]) => {
+    try {
+      const db = getFirestore(app);
+      const websiteRef = doc(db, "websiteContent", "main");
 
+      // Use dot notation for nested updates
+      const updateData = { [path]: value };
+      await updateDoc(websiteRef, updateData);
+    } catch (error) {
+      console.error("Error updating website text:", error);
+      throw error;
+    }
+  };
+
+  const updateWebsiteImage = async (path: string, value: string) => {
+    try {
+      const db = getFirestore(app);
+      const websiteRef = doc(db, "websiteImages", "main");
+
+      // Simple update for flattened structure
+      const updateData = { [path]: value };
+      await updateDoc(websiteRef, updateData);
+    } catch (error) {
+      console.error("Error updating website image:", error);
+      throw error;
+    }
+  };
 
   return (
     <ContentContext.Provider
       value={{
         companyContent,
         companyImages,
+        websiteContent,
+        websiteImages,
         isLoading,
         updateCompanyText,
         updateCompanyImage,
+        updateWebsiteText,
+        updateWebsiteImage,
       }}
     >
       {children}

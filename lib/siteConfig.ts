@@ -29,7 +29,7 @@ export const siteConfig = {
         image: "/assets/og/cmon-group.jpg",
         url: "https://cmon.group",
       },
-      favicon: "/assets/favicon.png",
+      favicon: "/logo.png",
       themeColor: "#b89f6b",
     },
     styles: {
@@ -91,9 +91,9 @@ export const siteConfig = {
     },
     header: {
       brand: {
-        text: "",
-        logoSrc: null,
-        alt: "",
+        text: "c mon group",
+        logoSrc: "/logo.png",
+        alt: "c mon group logo",
         route: "/",
       },
       nav: [
