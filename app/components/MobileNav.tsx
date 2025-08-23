@@ -80,9 +80,6 @@ export default function MobileNav({
           {/* Header */}
           <div className="p-6 border-b border-accent/20">
             <div className="flex items-center justify-between">
-              <div className="text-accent font-heading text-xl font-medium tracking-wide">
-                Menu
-              </div>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center hover:bg-accent/20 transition-colors"
@@ -102,6 +99,9 @@ export default function MobileNav({
                   />
                 </svg>
               </button>
+              <div className="text-accent font-heading text-xl font-medium tracking-wide">
+                Menu
+              </div>
             </div>
           </div>
 

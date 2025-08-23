@@ -91,9 +91,9 @@ export const siteConfig = {
     },
     header: {
       brand: {
-        text: "c mon group",
+        text: "",
         logoSrc: null,
-        alt: "c mon group logo",
+        alt: "",
         route: "/",
       },
       nav: [

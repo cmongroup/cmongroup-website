@@ -38,14 +38,42 @@ export default function Header({ header }: HeaderProps) {
       <AdminToolbar />
       <header className="top-0 z-40 w-full sticky bg-background/70 backdrop-blur-sm border-b border-black/5">
         <div className="mx-auto flex items-center justify-between px-6 py-4 max-w-container">
-          <Link
-            href={header.brand.route}
-            className="font-heading text-lg tracking-wide text-text"
-          >
-            {header.brand.text}
-          </Link>
-          
-          {/* Desktop Navigation */}
+          {/* Mobile Navigation - Left side */}
+          <div className="md:hidden">
+            <MobileNav
+              header={header}
+              onLoginClick={() => setIsLoginModalOpen(true)}
+              isAdmin={isAdmin}
+              onLogout={logout}
+            />
+          </div>
+
+          {/* Desktop CTA - Left side */}
+          <div className="hidden md:flex items-center gap-3">
+            {isAdmin ? (
+              <button
+                onClick={logout}
+                className="rounded-full border border-accent/20 bg-accent/5 text-accent px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
+              >
+                Exit Admin
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="rounded-full border border-accent/20 bg-accent/5 text-accent px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
+              >
+                Sign In
+              </button>
+            )}
+            <Link
+              href={header.cta.route}
+              className="rounded-full bg-black text-white px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
+            >
+              {header.cta.title}
+            </Link>
+          </div>
+
+          {/* Desktop Navigation - Center */}
           <nav className="hidden md:flex items-center gap-8 text-sm">
             {header.nav.map((item: any) => {
               if (item.children?.length) {
@@ -86,45 +114,22 @@ export default function Header({ header }: HeaderProps) {
             })}
           </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            {isAdmin ? (
-              <button
-                onClick={logout}
-                className="rounded-full border border-accent/20 bg-accent/5 text-accent px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
-              >
-                Exit Admin
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className="rounded-full border border-accent/20 bg-accent/5 text-accent px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
-              >
-                Sign In
-              </button>
-            )}
+          {/* Mobile CTA - Right side */}
+          <div className="md:hidden">
             <Link
               href={header.cta.route}
-              className="rounded-full bg-black text-white px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
+              className="rounded-full bg-black text-white px-4 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
             >
               {header.cta.title}
             </Link>
           </div>
-
-          {/* Mobile Navigation */}
-          <MobileNav 
-            header={header} 
-            onLoginClick={() => setIsLoginModalOpen(true)}
-            isAdmin={isAdmin}
-            onLogout={logout}
-          />
         </div>
       </header>
 
       {/* Login Modal */}
-      <LoginModal 
-        isOpen={isLoginModalOpen} 
-        onClose={() => setIsLoginModalOpen(false)} 
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
       />
     </>
   );
