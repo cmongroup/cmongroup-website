@@ -93,41 +93,6 @@ export default function CompaniesPage() {
                     <p className="text-lg text-muted leading-relaxed">
                       {card.summary}
                     </p>
-
-                    {/* Company-specific detailed descriptions */}
-                    {card.slug === "cmon-design" && (
-                      <p className="text-muted leading-relaxed">
-                        From concept to completion, we transform spaces into
-                        experiences. Our team combines creative vision with
-                        technical expertise, delivering bespoke interior
-                        solutions that reflect your brand's unique identity. We
-                        handle everything from initial sketches to final
-                        installation, ensuring every detail meets our exacting
-                        standards.
-                      </p>
-                    )}
-
-                    {card.slug === "rebred" && (
-                      <p className="text-muted leading-relaxed">
-                        We don't just rebrand restaurants—we reimagine them. Our
-                        strategic approach goes beyond visual identity to create
-                        comprehensive brand systems that drive customer
-                        engagement and business growth. From menu engineering to
-                        franchise development, we build brands that scale and
-                        succeed in competitive markets.
-                      </p>
-                    )}
-
-                    {card.slug === "gmep" && (
-                      <p className="text-muted leading-relaxed">
-                        Precision engineering meets practical execution. Our MEP
-                        specialists ensure building systems work seamlessly
-                        together, from HVAC optimization to smart building
-                        integration. We handle complex technical challenges
-                        while maintaining focus on energy efficiency,
-                        sustainability, and long-term reliability.
-                      </p>
-                    )}
                   </div>
 
                   {/* Services Description */}

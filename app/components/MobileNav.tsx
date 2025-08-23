@@ -96,31 +96,71 @@ export default function MobileNav({ header }: { header: Header }) {
           {/* Navigation Items */}
           <div className="p-6 space-y-3">
             {header.nav.map((item) => (
-              <Link
-                key={item.title}
-                href={item.route}
-                onClick={() => setIsOpen(false)}
-                className="block w-full p-4 rounded-xl bg-accent/5 hover:bg-accent/10 transition-colors border border-accent/10 hover:border-accent/20"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-base font-medium text-text group-hover:text-accent transition-colors">
-                    {item.title}
-                  </span>
-                  <svg
-                    className="w-4 h-4 text-muted"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              <div key={item.title}>
+                {item.children ? (
+                  <div className="space-y-2">
+                    <div className="block w-full p-4 rounded-xl bg-accent/5 border border-accent/10">
+                      <div className="flex items-center justify-between">
+                        <span className="text-base font-medium text-text">
+                          {item.title}
+                        </span>
+                        <svg
+                          className="w-4 h-4 text-muted"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 9l6 6 6-6"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4 space-y-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.title}
+                          href={child.route}
+                          onClick={() => setIsOpen(false)}
+                          className="block w-full p-3 rounded-lg bg-accent/5 hover:bg-accent/10 transition-colors border border-accent/10 hover:border-accent/20"
+                        >
+                          <span className="text-sm font-medium text-text group-hover:text-accent transition-colors">
+                            {child.title}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    href={item.route}
+                    onClick={() => setIsOpen(false)}
+                    className="block w-full p-4 rounded-xl bg-accent/5 hover:bg-accent/10 transition-colors border border-accent/10 hover:border-accent/20"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </Link>
+                    <div className="flex items-center justify-between">
+                      <span className="text-base font-medium text-text group-hover:text-accent transition-colors">
+                        {item.title}
+                      </span>
+                      <svg
+                        className="w-4 h-4 text-muted"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
 
