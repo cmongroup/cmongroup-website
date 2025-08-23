@@ -186,7 +186,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="relative flex justify-center md:justify-end">
-          <div className="hero-image-oval relative shadow-soft ring-1 ring-black/5 bg-surface">
+          <div className="relative shadow-soft ring-1 ring-black/5 bg-surface rounded-full overflow-hidden mx-auto w-64 h-[400px] md:w-[480px] md:h-[700px]">
             <Image
               src={hero.right.image.src}
               alt={hero.right.image.alt}

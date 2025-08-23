@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -148,27 +148,4 @@ html {
     var(--fade-bg, #ececec) 0%,
     transparent 100%
   );
-}
-
-/* Hero image oval styling */
-.hero-image-oval {
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-/* Mobile responsive sizing */
-@media (max-width: 767px) {
-  .hero-image-oval {
-    width: 256px !important;
-    height: 400px !important;
-  }
-}
-
-/* Desktop sizing */
-@media (min-width: 768px) {
-  .hero-image-oval {
-    width: 480px !important;
-    height: 700px !important;
-  }
 }
