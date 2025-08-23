@@ -205,32 +205,6 @@ export default function CmonDesignPage() {
                       "We specialize in creating digital products that users love and businesses rely on. Our team combines design thinking with technical excellence, ensuring every project delivers both beautiful aesthetics and powerful functionality."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section2?.expertisePoints?.map((point, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="cmon-design"
-                          path={`section2.expertisePoints.${index}`}
-                        >
-                          {point}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "User experience design",
-                      "Visual design and branding",
-                      "Frontend development",
-                      "Digital strategy and consulting",
-                    ].map((point, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>
@@ -274,32 +248,6 @@ export default function CmonDesignPage() {
                       "Our digital design team brings together creativity, technical expertise, and business understanding. We create solutions that not only look stunning but also perform flawlessly and drive measurable business outcomes."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section3?.benefits?.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="cmon-design"
-                          path={`section3.benefits.${index}`}
-                        >
-                          {benefit}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "User-centered design approach",
-                      "Modern development practices",
-                      "Business-focused solutions",
-                      "Ongoing support and optimization",
-                    ].map((benefit, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>

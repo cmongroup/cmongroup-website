@@ -196,32 +196,6 @@ export default function RebredPage() {
                       "We specialize in transforming food and beverage concepts into powerful, scalable brands. Our team combines strategic thinking with creative execution, ensuring every brand element works together to create memorable customer experiences and drive business results."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section2?.expertisePoints?.map((point, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="rebred"
-                          path={`section2.expertisePoints.${index}`}
-                        >
-                          {point}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "Brand strategy and positioning",
-                      "Visual identity and design systems",
-                      "Menu engineering and optimization",
-                      "Franchise development and scaling",
-                    ].map((point, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>
@@ -263,32 +237,6 @@ export default function RebredPage() {
                       "Our F&B branding team brings deep industry knowledge and proven methodologies to every project. We understand the unique challenges of the food service industry and create solutions that not only look great but drive measurable business outcomes."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section3?.benefits?.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="rebred"
-                          path={`section3.benefits.${index}`}
-                        >
-                          {benefit}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "Industry-specific expertise",
-                      "Strategic brand development",
-                      "Proven scaling methodologies",
-                      "Comprehensive brand systems",
-                    ].map((benefit, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>

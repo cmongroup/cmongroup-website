@@ -195,31 +195,6 @@ export default function GmepPage() {
                       "We specialize in complex MEP systems for commercial, hospitality, and industrial projects. Our team combines deep technical knowledge with practical installation experience, ensuring every system is designed for optimal performance and maintainability."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section2?.expertisePoints?.map((point, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="gmep"
-                          path={`section2.expertisePoints.${index}`}
-                        >
-                          {point}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "HVAC design and optimization",
-                      "Electrical and lighting systems",
-                      "Plumbing and fire protection",
-                    ].map((point, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>
@@ -260,31 +235,6 @@ export default function GmepPage() {
                       "Our MEP team brings decades of combined experience in building systems engineering. We understand the critical importance of reliable, efficient systems and work closely with architects and contractors to ensure seamless integration and optimal performance."}
                   </EditableText>
                 </p>
-                <ul className="space-y-2 text-muted">
-                  {content?.section3?.benefits?.map((benefit, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                      <span>
-                        <EditableText
-                          companySlug="gmep"
-                          path={`section3.benefits.${index}`}
-                        >
-                          {benefit}
-                        </EditableText>
-                      </span>
-                    </li>
-                  )) ||
-                    [
-                      "Comprehensive system integration",
-                      "Energy efficiency optimization",
-                      "Full commissioning and handover",
-                    ].map((benefit, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                </ul>
               </div>
             </div>
           </article>
