@@ -77,12 +77,12 @@ export default function CmonDesignPage() {
               {content?.brandName || company.brand.name}
             </EditableText>
           </h1>
-          <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+          <div className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
             <EditableText companySlug="cmon-design" path="description">
               {content?.description ||
                 "We create exceptional digital experiences that combine beautiful design with powerful functionality. Our team specializes in user-centered design, modern development practices, and creating solutions that drive business results while delighting users."}
             </EditableText>
-          </p>
+          </div>
         </div>
 
         {/* Company Layout - Alternating Left/Right */}

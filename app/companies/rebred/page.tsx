@@ -77,12 +77,12 @@ export default function RebredPage() {
               {content?.brandName || company.brand.name}
             </EditableText>
           </h1>
-          <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+          <div className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
             <EditableText companySlug="rebred" path="description">
               {content?.description ||
                 "We don't just rebrand restaurants—we reimagine them. Our strategic approach goes beyond visual identity to create comprehensive brand systems that drive customer engagement and business growth. From menu engineering to franchise development, we build brands that scale and succeed in competitive markets."}
             </EditableText>
-          </p>
+          </div>
         </div>
 
         {/* Company Layout - Alternating Left/Right */}

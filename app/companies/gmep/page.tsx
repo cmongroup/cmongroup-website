@@ -77,12 +77,12 @@ export default function GmepPage() {
               {content?.brandName || company.brand.name}
             </EditableText>
           </h1>
-          <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
+          <div className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">
             <EditableText companySlug="gmep" path="description">
               {content?.description ||
                 "Precision engineering meets practical execution. Our MEP specialists ensure building systems work seamlessly together, from HVAC optimization to smart building integration. We handle complex technical challenges while maintaining focus on energy efficiency, sustainability, and long-term reliability."}
             </EditableText>
-          </p>
+          </div>
         </div>
 
         {/* Company Layout - Alternating Left/Right */}
