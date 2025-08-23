@@ -11,6 +11,7 @@
     "setup-editing": "node scripts/setup-website-editing.js"
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "firebase": "^12.1.0",
     "framer-motion": "^11.18.2",
     "next": "^15.5.0",
