@@ -117,9 +117,9 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     // Initial fetch
     fetchCompanyData();
 
-    // Listen to changes on one company to trigger updates
+    // Listen to changes on all companies to trigger updates
     const unsubscribeContent = onSnapshot(
-      doc(db, "companyContent", "gmep"),
+      collection(db, "companyContent"),
       () => {
         // Refetch all data when any company changes
         fetchCompanyData();
@@ -129,8 +129,20 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
+    const unsubscribeImages = onSnapshot(
+      collection(db, "companyImages"),
+      () => {
+        // Refetch all data when any company images change
+        fetchCompanyData();
+      },
+      (error) => {
+        console.error("Error listening to image changes:", error);
+      }
+    );
+
     return () => {
       unsubscribeContent();
+      unsubscribeImages();
     };
   }, []);
 

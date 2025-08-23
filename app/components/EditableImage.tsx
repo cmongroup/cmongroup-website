@@ -241,8 +241,8 @@ export default function EditableImage({
   if (!isAdmin) {
     return (
       <Image
-        src={src}
-        alt={alt}
+        src={imageSrc}
+        alt={imageAlt}
         width={width}
         height={height}
         className={className}
@@ -253,51 +253,62 @@ export default function EditableImage({
 
   if (isEditing) {
     return (
-      <div className="relative border-2 border-accent rounded-lg p-4 bg-white">
-        <div className="space-y-3">
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-red-600 text-sm">{error}</p>
+      <div className="w-full h-full bg-background rounded-2xl shadow-soft ring-1 ring-black/5 overflow-hidden">
+        {/* Image Preview - Takes up the same space as the original image */}
+        <div className="w-full h-3/4 relative">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            className="object-cover"
+            priority={priority}
+          />
+        </div>
+
+        {/* Form Controls - Positioned below the image preview */}
+        <div className="w-full h-1/4 bg-white p-4 border-t border-accent/20">
+          <div className="space-y-3">
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-2">
+                <p className="text-red-600 text-xs">{error}</p>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-medium text-text whitespace-nowrap">
+                Alt Text:
+              </label>
+              <input
+                type="text"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="flex-1 px-2 py-1 text-xs border border-accent/20 rounded focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/20"
+                placeholder="Enter alt text"
+              />
             </div>
-          )}
 
-          <div>
-            <label className="block text-sm font-medium text-text mb-1">
-              Alt Text
-            </label>
-            <input
-              type="text"
-              value={imageAlt}
-              onChange={(e) => setImageAlt(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="w-full px-3 py-2 border border-accent/20 rounded-lg focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-              placeholder="Enter alt text"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={handleRestorePlaceholder}
-              className="px-4 py-2 border border-accent/20 text-accent rounded-lg hover:bg-accent/10 transition-colors"
-            >
-              Restore Original
-            </button>
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={handleSave}
-              disabled={isLoading}
-              className="px-4 py-2 bg-accent text-text rounded-lg hover:bg-accent-dark transition-colors disabled:opacity-50"
-            >
-              {isLoading ? "Saving..." : "Save"}
-            </button>
-            <button
-              onClick={handleCancel}
-              className="px-4 py-2 border border-accent/20 text-accent rounded-lg hover:bg-accent/10 transition-colors"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleRestorePlaceholder}
+                className="px-3 py-1 text-xs border border-accent/20 text-accent rounded hover:bg-accent/10 transition-colors"
+              >
+                Restore
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={isLoading}
+                className="px-3 py-1 text-xs bg-accent text-text rounded hover:bg-accent-dark transition-colors disabled:opacity-50"
+              >
+                {isLoading ? "Saving..." : "Save"}
+              </button>
+              <button
+                onClick={handleCancel}
+                className="px-3 py-1 text-xs border border-accent/20 text-accent rounded hover:bg-accent/10 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
 
@@ -318,8 +329,8 @@ export default function EditableImage({
         className="hidden"
       />
       <Image
-        src={src}
-        alt={alt}
+        src={imageSrc}
+        alt={imageAlt}
         width={width}
         height={height}
         className={`${className} ${isAdmin ? "cursor-pointer" : ""}`}
