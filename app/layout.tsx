@@ -2,6 +2,7 @@ import "./globals.css";
 import React from "react";
 import { siteConfig as _siteConfigAlias } from "@/lib/siteConfig";
 import Link from "next/link";
+import MobileNav from "./components/MobileNav";
 // Add types for stronger typing of metadata & viewport
 import type { Metadata, Viewport } from "next";
 
@@ -48,6 +49,8 @@ export default function RootLayout({
             >
               {header.brand.text}
             </Link>
+            
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8 text-sm">
               {header.nav.map((item: any) => {
                 if (item.children?.length) {
@@ -87,7 +90,9 @@ export default function RootLayout({
                 );
               })}
             </nav>
-            <div className="flex items-center gap-3">
+
+            {/* Desktop CTA */}
+            <div className="hidden md:flex items-center gap-3">
               <Link
                 href={header.cta.route}
                 className="rounded-full bg-black text-white px-6 py-2 text-sm font-medium hover:bg-accent hover:text-text transition-colors"
@@ -95,6 +100,9 @@ export default function RootLayout({
                 {header.cta.title}
               </Link>
             </div>
+
+            {/* Mobile Navigation */}
+            <MobileNav header={header} />
           </div>
         </header>
         <main className="flex-1 px-6 py-10 mx-auto w-full max-w-container">
