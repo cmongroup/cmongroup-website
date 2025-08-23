@@ -1,4 +1,33 @@
 import { siteConfig } from "@/lib/siteConfig";
+import Link from "next/link";
+
+// Button + action typing
+export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
+export interface Action {
+  title: string;
+  route: string;
+  variant: ButtonVariant;
+}
+
+const buttonBase =
+  "inline-flex items-center justify-center text-xs font-medium tracking-wide transition-colors rounded-full px-6 py-2.5 focus:outline-hidden focus-visible:ring-3 focus-visible:ring-accent";
+const buttonVariants: Record<ButtonVariant, string> = {
+  primary: "bg-black text-white hover:bg-accent hover:text-text",
+  ghost: "border border-text/60 text-text hover:bg-text hover:text-white",
+  accent: "bg-accent text-text hover:bg-black hover:text-white",
+  black: "bg-black text-white hover:bg-accent hover:text-text",
+};
+
+function Button({ action }: { action: Action }) {
+  return (
+    <Link
+      href={action.route}
+      className={`${buttonBase} ${buttonVariants[action.variant]}`}
+    >
+      {action.title}
+    </Link>
+  );
+}
 
 export default function CompaniesPage() {
   const { companies } = siteConfig.website.sections.reduce(
@@ -30,57 +59,92 @@ export default function CompaniesPage() {
           </p>
         </div>
 
-        {/* Companies Grid */}
+        {/* Companies Alternating Layout */}
         {companies && (
-          <div className="grid gap-8 lg:grid-cols-3">
-            {companies.cards.map((card: any) => (
+          <div className="space-y-24">
+            {companies.cards.map((card: any, index: number) => (
               <article
                 key={card.slug}
-                className="flex flex-col rounded-2xl overflow-hidden bg-surface shadow-soft ring-1 ring-black/5 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className={`flex flex-col lg:flex-row gap-12 lg:gap-16 items-center ${
+                  index % 2 === 0 ? "" : "lg:flex-row-reverse"
+                }`}
               >
-                <div className="aspect-4/3 overflow-hidden bg-background relative">
-                  <img
-                    src={card.media.cover}
-                    alt={card.media.alt}
-                    className="w-full h-full object-cover"
-                  />
+                {/* Image Section */}
+                <div className="w-full lg:w-1/2">
+                  <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+                    <img
+                      src={card.media.cover}
+                      alt={card.media.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
-                <div className="p-8 flex flex-col gap-4 flex-1">
-                  <div className="space-y-2">
-                    <h3 className="font-heading text-2xl text-text">
-                      {card.brand.name}
-                    </h3>
-                    <p className="text-sm uppercase tracking-wide text-muted/90">
+
+                {/* Content Section */}
+                <div className="w-full lg:w-1/2 space-y-6">
+                  <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
                       {card.tagline}
+                    </div>
+                    <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
+                      {card.brand.name}
+                    </h2>
+                    <p className="text-lg text-muted leading-relaxed">
+                      {card.summary}
+                    </p>
+
+                    {/* Company-specific detailed descriptions */}
+                    {card.slug === "cmon-design" && (
+                      <p className="text-muted leading-relaxed">
+                        From concept to completion, we transform spaces into
+                        experiences. Our team combines creative vision with
+                        technical expertise, delivering bespoke interior
+                        solutions that reflect your brand's unique identity. We
+                        handle everything from initial sketches to final
+                        installation, ensuring every detail meets our exacting
+                        standards.
+                      </p>
+                    )}
+
+                    {card.slug === "rebred" && (
+                      <p className="text-muted leading-relaxed">
+                        We don't just rebrand restaurants—we reimagine them. Our
+                        strategic approach goes beyond visual identity to create
+                        comprehensive brand systems that drive customer
+                        engagement and business growth. From menu engineering to
+                        franchise development, we build brands that scale and
+                        succeed in competitive markets.
+                      </p>
+                    )}
+
+                    {card.slug === "gmep" && (
+                      <p className="text-muted leading-relaxed">
+                        Precision engineering meets practical execution. Our MEP
+                        specialists ensure building systems work seamlessly
+                        together, from HVAC optimization to smart building
+                        integration. We handle complex technical challenges
+                        while maintaining focus on energy efficiency,
+                        sustainability, and long-term reliability.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Services Description */}
+                  <div className="space-y-3">
+                    <h3 className="font-medium text-text text-sm uppercase tracking-wide">
+                      What we deliver
+                    </h3>
+                    <p className="text-muted leading-relaxed">
+                      {card.services.join(", ")}.
                     </p>
                   </div>
-                  <p className="text-muted leading-relaxed flex-1">
-                    {card.summary}
-                  </p>
-                  <ul className="text-sm space-y-2">
-                    {card.services.map((service: string) => (
-                      <li key={service} className="pl-4 relative">
-                        <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-accent" />
-                        {service}
-                      </li>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    {card.actions.map((action: any) => (
+                      <Button key={action.title} action={action} />
                     ))}
-                  </ul>
-                  <div className="pt-4">
-                    <div className="flex flex-col gap-3">
-                      {card.actions.map((action: any) => (
-                        <a
-                          key={action.title}
-                          href={action.route}
-                          className={`inline-flex items-center justify-center text-xs font-medium tracking-wide transition-colors rounded-full px-6 py-2.5 focus:outline-hidden focus-visible:ring-3 focus-visible:ring-accent ${
-                            action.variant === "accent"
-                              ? "bg-accent text-text hover:bg-black hover:text-white"
-                              : "border border-text/60 text-text hover:bg-text hover:text-white"
-                          }`}
-                        >
-                          {action.title}
-                        </a>
-                      ))}
-                    </div>
                   </div>
                 </div>
               </article>
@@ -89,7 +153,7 @@ export default function CompaniesPage() {
         )}
 
         {/* CTA Section */}
-        <div className="mt-20 text-center">
+        <div className="mt-24 text-center">
           <div className="bg-accent/10 rounded-3xl p-12 max-w-4xl mx-auto">
             <h2 className="font-heading text-3xl md:text-4xl mb-6">
               Ready to start your project?
@@ -99,18 +163,20 @@ export default function CompaniesPage() {
               we&apos;re here to help bring your vision to life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center text-sm font-medium tracking-wide transition-colors rounded-full px-8 py-3 bg-black text-white hover:bg-accent hover:text-text"
-              >
-                Get in Touch
-              </a>
-              <a
-                href="/#services"
-                className="inline-flex items-center justify-center text-sm font-medium tracking-wide transition-colors rounded-full px-8 py-3 border border-text/60 text-text hover:bg-text hover:text-white"
-              >
-                View Services
-              </a>
+              <Button
+                action={{
+                  title: "Get in Touch",
+                  route: "/contact",
+                  variant: "primary",
+                }}
+              />
+              <Button
+                action={{
+                  title: "View Services",
+                  route: "/#services",
+                  variant: "ghost",
+                }}
+              />
             </div>
           </div>
         </div>
