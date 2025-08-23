@@ -90,12 +90,7 @@ function ContactForm() {
       <div className="max-w-4xl mx-auto px-8 py-6">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            <EditableWebsiteText path="contact.hero.eyebrow">
-              Get in Touch
-            </EditableWebsiteText>
-          </div>
+
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
             <EditableWebsiteText path="contact.hero.title">
               Let&apos;s discuss your project

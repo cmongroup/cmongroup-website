@@ -66,12 +66,7 @@ export default function GmepPage() {
       <div className="max-w-7xl mx-auto px-8 py-6">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-            <EditableText companySlug="gmep" path="tagline">
-              {content?.tagline || company.tagline}
-            </EditableText>
-          </div>
+
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
             <EditableText companySlug="gmep" path="brandName">
               {content?.brandName || company.brand.name}
@@ -108,12 +103,7 @@ export default function GmepPage() {
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                  <EditableText companySlug="gmep" path="tagline">
-                    {content?.tagline || company.tagline}
-                  </EditableText>
-                </div>
+
                 <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
                   <EditableText companySlug="gmep" path="section1.title">
                     {content?.section1?.title || "Electromechanical Services"}

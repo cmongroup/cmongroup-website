@@ -261,10 +261,7 @@ export default function HomePage() {
           aria-labelledby="companies-heading"
         >
           <header className="space-y-4 max-w-3xl text-center mx-auto mb-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Our Companies
-            </div>
+
             <h2
               id="companies-heading"
               className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
@@ -553,10 +550,7 @@ export default function HomePage() {
           aria-labelledby="services-heading"
         >
           <header className="space-y-4 max-w-3xl text-center mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Our Services
-            </div>
+
             <h2
               id="services-heading"
               className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"

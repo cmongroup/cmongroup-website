@@ -21,10 +21,7 @@ export default function AboutPage() {
 
           {/* Header */}
           <div className="relative text-center space-y-6 mb-12 pb-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              About Us
-            </div>
+
             <div className="min-h-[1.2em] flex items-center justify-center">
               <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl tracking-tight bg-linear-to-r from-text via-text to-text/70 bg-clip-text text-transparent leading-[1.1] py-2">
                 <EditableWebsiteText path="about.hero.title">
@@ -69,10 +66,7 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-surface/30">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="text-center space-y-4 mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Our Companies
-            </div>
+
             <h2 className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent py-2">
               <EditableWebsiteText path="about.companies.title">
                 Three specialist companies
@@ -152,10 +146,7 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-surface/30">
         <div className="container mx-auto px-6 max-w-4xl">
           <div className="text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Our Approach
-            </div>
+
 
             <h2 className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent py-2">
               <EditableWebsiteText path="about.approach.title">

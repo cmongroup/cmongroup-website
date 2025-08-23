@@ -49,7 +49,7 @@ export default function ServicesPage() {
               <div className="mt-6">
                 <Link
                   href={tab.content.cta.route}
-                  className="inline-block rounded-full bg-black text-white text-xs font-medium tracking-wide px-5 py-2 hover:bg-accent hover:text-text transition-colors"
+                  className="inline-block bg-black text-white text-xs font-medium tracking-wide px-5 py-2 hover:bg-accent hover:text-text transition-colors"
                 >
                   {tab.content.cta.title}
                 </Link>
