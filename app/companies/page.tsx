@@ -2,6 +2,7 @@
 
 import { siteConfig } from "@/lib/siteConfig";
 import Link from "next/link";
+import Image from "next/image";
 import { useContent } from "@/app/contexts/ContentContext";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { useState, useEffect } from "react";
@@ -88,7 +89,7 @@ function CompaniesPageEditableText({
         }
 
         // Create new services array with updated value
-        const newServices = [...currentServices];
+        const newServices = [...(currentServices || [])];
         newServices[serviceIndex] = text;
 
         // Update the entire services array
@@ -274,7 +275,7 @@ function CompaniesPageEditableImage({
 
   if (!isAdmin) {
     return (
-      <img
+      <Image
         src={src}
         alt={alt}
         width={width}
@@ -329,7 +330,7 @@ function CompaniesPageEditableImage({
 
   return (
     <div className="relative group">
-      <img
+      <Image
         src={src}
         alt={alt}
         width={width}

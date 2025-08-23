@@ -73,8 +73,8 @@ export default function RebredPage() {
             </EditableText>
           </div>
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
-            <EditableText companySlug="rebred" path="companyName">
-              {content?.companyName || company.brand.name}
+            <EditableText companySlug="rebred" path="brandName">
+              {content?.brandName || company.brand.name}
             </EditableText>
           </h1>
           <p className="text-lg text-muted max-w-3xl mx-auto leading-relaxed">

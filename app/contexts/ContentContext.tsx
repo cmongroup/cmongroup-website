@@ -12,12 +12,14 @@ import {
 import app from "@/lib/firebase";
 
 interface CompanyContent {
+  brandName: string;
   tagline: string;
   description: string;
   section1: {
     title: string;
     summary: string;
     services: string;
+    servicesLabel: string;
   };
   section2: {
     title: string;
