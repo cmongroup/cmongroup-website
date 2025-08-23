@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: #ececec;
+  --color-primary: #000000;
+  --color-secondary: #666666;
+  --color-accent: #b89f6b;
+  --color-surface: #ffffff;
+  --color-text: #0e0e0e;
+  --color-muted: #4a4a4a;
+  --color-accent-dark: #9c875b;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  --font-heading: Canela, Cormorant Garamond, Georgia, serif;
+  --font-body: Inter, Helvetica Neue, Arial, sans-serif;
+
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-hard: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  --container-container: 1280px;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/* Adaptive typography (Apple-like rhythm) */
+.h1-display {
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.h2-section {
+  font-size: clamp(2rem, 3.2vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+.h3-card {
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+.body-lead {
+  font-size: clamp(1rem, 1.1vw, 1.125rem);
+  line-height: 1.55;
+}
+.body-sm {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+/* Custom scale utility (for legacy scaled blocks) */
+.shrink-90 {
+  @apply scale-[0.9];
+}
+.shrink-90-origin {
+  transform-origin: top center;
+}
+
+/* Smooth scroll (disabled if reduced motion) */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    scroll-snap-type: none !important;
+  }
+}
+
+/* Carousel styling */
+.carousel {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+.carousel {
+  scrollbar-width: none;
+}
+.carousel-slide {
+  scroll-snap-align: start;
+}
+.carousel-nav-btn {
+  @apply absolute top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-black/60 text-white flex items-center justify-center backdrop-blur-xs transition hover:bg-black/80 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Utility to gently fade edges of horizontal carousels */
+.edge-fade {
+  position: relative;
+}
+.edge-fade:before,
+.edge-fade:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 56px;
+  pointer-events: none;
+  z-index: 5;
+}
+.edge-fade:before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--fade-bg, #ececec) 0%,
+    transparent 100%
+  );
+}
+.edge-fade:after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--fade-bg, #ececec) 0%,
+    transparent 100%
+  );
+}
+
+/* Hero image oval styling */
+.hero-image-oval {
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* Mobile responsive sizing */
+@media (max-width: 767px) {
+  .hero-image-oval {
+    width: 256px !important;
+    height: 400px !important;
+  }
+}
+
+/* Desktop sizing */
+@media (min-width: 768px) {
+  .hero-image-oval {
+    width: 480px !important;
+    height: 700px !important;
+  }
+}
