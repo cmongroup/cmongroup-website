@@ -174,14 +174,9 @@ export const siteConfig = {
             },
             actions: [
               {
-                title: "Learn More",
-                route: "/companies/cmon-design",
-                variant: "accent",
-              },
-              {
                 title: "Book consultation",
                 route: "/contact?topic=design-consultation",
-                variant: "ghost",
+                variant: "accent",
               },
             ],
           },
@@ -202,14 +197,9 @@ export const siteConfig = {
             },
             actions: [
               {
-                title: "Learn More",
-                route: "/companies/rebred",
-                variant: "accent",
-              },
-              {
                 title: "Request brand audit",
                 route: "/contact?topic=brand-audit",
-                variant: "ghost",
+                variant: "accent",
               },
             ],
           },
@@ -230,14 +220,9 @@ export const siteConfig = {
             },
             actions: [
               {
-                title: "Learn More",
-                route: "/companies/gmep",
-                variant: "accent",
-              },
-              {
                 title: "Request a quote",
                 route: "/contact?topic=gmep-quote",
-                variant: "ghost",
+                variant: "accent",
               },
             ],
           },
@@ -308,7 +293,7 @@ export const siteConfig = {
           {
             title: "Book a discovery call",
             route: "/contact?topic=discovery-call",
-            variant: "black",
+            variant: "accent",
           },
           {
             title: "Send your RFP",
