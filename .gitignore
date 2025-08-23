@@ -8,6 +8,7 @@
 .pnp.js
 /scripts
 debug-firebase.js
+firebase.env
 
 # testing
 /coverage

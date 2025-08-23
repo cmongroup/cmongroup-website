@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDApAHnXrNJFcoEagJVm-fXgOoidEvAr0k",
-  authDomain: "cmon-design.firebaseapp.com",
-  projectId: "cmon-design",
-  storageBucket: "cmon-design.firebasestorage.app",
-  messagingSenderId: "514278181309",
-  appId: "1:514278181309:web:f19d15ee0dcad8bf9b6ad4",
-  measurementId: "G-CFYQ9N2HRZ",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
