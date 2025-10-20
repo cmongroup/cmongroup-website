@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useContent } from "@/app/contexts/ContentContext";
 import EditableText from "@/app/components/EditableText";
 import EditableImage from "@/app/components/EditableImage";
+import CompaniesCarousel from "@/app/components/CompaniesCarousel";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -66,7 +67,6 @@ export default function CmonDesignPage() {
       <div className="max-w-7xl mx-auto px-8 py-6">
         {/* Header Section */}
         <div className="text-center mb-16">
-
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
             <EditableText companySlug="cmon-design" path="brandName">
               {content?.brandName || company.brand.name}
@@ -103,7 +103,6 @@ export default function CmonDesignPage() {
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-
                 <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
                   <EditableText companySlug="cmon-design" path="section1.title">
                     {content?.section1?.title || "Digital Design & Development"}
@@ -250,12 +249,8 @@ export default function CmonDesignPage() {
                 <EditableImage
                   companySlug="cmon-design"
                   path="section4Src"
-                  src={
-                    images?.section4Src || "/images/placeholder-process.jpg"
-                  }
-                  alt={
-                    images?.section4Alt || "Design process workflow"
-                  }
+                  src={images?.section4Src || "/images/placeholder-process.jpg"}
+                  alt={images?.section4Alt || "Design process workflow"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -293,12 +288,8 @@ export default function CmonDesignPage() {
                 <EditableImage
                   companySlug="cmon-design"
                   path="section5Src"
-                  src={
-                    images?.section5Src || "/images/placeholder-success.jpg"
-                  }
-                  alt={
-                    images?.section5Alt || "Client success stories"
-                  }
+                  src={images?.section5Src || "/images/placeholder-success.jpg"}
+                  alt={images?.section5Alt || "Client success stories"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -328,6 +319,8 @@ export default function CmonDesignPage() {
             </div>
           </article>
         </div>
+
+        <CompaniesCarousel carouselId="cmon-design" className="mt-24" />
 
         {/* CTA Section */}
         <div className="mt-24 text-center">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useContent } from "@/app/contexts/ContentContext";
 import EditableText from "@/app/components/EditableText";
 import EditableImage from "@/app/components/EditableImage";
+import CompaniesCarousel from "@/app/components/CompaniesCarousel";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -66,7 +67,6 @@ export default function RebredPage() {
       <div className="max-w-7xl mx-auto px-8 py-6">
         {/* Header Section */}
         <div className="text-center mb-16">
-
           <h1 className="font-heading text-4xl md:text-6xl leading-tight tracking-tight mb-6">
             <EditableText companySlug="rebred" path="brandName">
               {content?.brandName || company.brand.name}
@@ -103,7 +103,6 @@ export default function RebredPage() {
             {/* Content Section */}
             <div className="w-full lg:w-1/2 space-y-6">
               <div className="space-y-4">
-
                 <h2 className="font-heading text-3xl lg:text-4xl text-text leading-tight">
                   <EditableText companySlug="rebred" path="section1.title">
                     {content?.section1?.title || "F&B Brand Architecture"}
@@ -201,9 +200,7 @@ export default function RebredPage() {
                   src={
                     images?.section3Src || "/images/placeholder-reliability.jpg"
                   }
-                  alt={
-                    images?.section3Alt || "Strategic brand development"
-                  }
+                  alt={images?.section3Alt || "Strategic brand development"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -244,9 +241,7 @@ export default function RebredPage() {
                   src={
                     images?.section4Src || "/images/placeholder-strategy.jpg"
                   }
-                  alt={
-                    images?.section4Alt || "Brand strategy development"
-                  }
+                  alt={images?.section4Alt || "Brand strategy development"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -284,12 +279,8 @@ export default function RebredPage() {
                 <EditableImage
                   companySlug="rebred"
                   path="section5Src"
-                  src={
-                    images?.section5Src || "/images/placeholder-success.jpg"
-                  }
-                  alt={
-                    images?.section5Alt || "Market success and growth"
-                  }
+                  src={images?.section5Src || "/images/placeholder-success.jpg"}
+                  alt={images?.section5Alt || "Market success and growth"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
@@ -319,6 +310,8 @@ export default function RebredPage() {
             </div>
           </article>
         </div>
+
+        <CompaniesCarousel carouselId="rebred" className="mt-24" />
 
         {/* CTA Section */}
         <div className="mt-24 text-center">

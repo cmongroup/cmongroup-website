@@ -111,7 +111,10 @@ export default function EditableText({
     >
       {children}
       {isAdmin && (
-        <div className="absolute inset-0 border border-accent/0 group-hover:border-accent/80 rounded transition-all duration-200 pointer-events-none opacity-0 group-hover:opacity-100"></div>
+        <span
+          className="absolute inset-0 border border-accent/0 group-hover:border-accent/80 rounded transition-all duration-200 pointer-events-none opacity-0 group-hover:opacity-100"
+          style={{ display: "block" }}
+        ></span>
       )}
     </Tag>
   );
