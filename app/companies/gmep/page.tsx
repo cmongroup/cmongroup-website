@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useContent } from "@/app/contexts/ContentContext";
 import EditableText from "@/app/components/EditableText";
 import EditableImage from "@/app/components/EditableImage";
-import CompaniesCarousel from "@/app/components/CompaniesCarousel";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -302,9 +301,6 @@ export default function GmepPage() {
             </div>
           </article>
         </div>
-
-        <CompaniesCarousel carouselId="gmep" className="mt-24" />
-
         {/* CTA Section */}
         <div className="mt-24 text-center">
           <div className="bg-accent/10 rounded-3xl p-12 max-w-4xl mx-auto">

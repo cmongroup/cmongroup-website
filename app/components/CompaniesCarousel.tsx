@@ -80,13 +80,10 @@ interface CarouselBase {
 
 const AUTOPLAY_RESUME_DELAY = 3000;
 const DEFAULT_SUBTITLE = "Discover our portfolio of innovative businesses";
-const OTHER_COMPANY_TITLE = "Explore Our Other Companies";
-const OTHER_COMPANY_SUBTITLE =
-  "Discover the full range of integrated services we offer";
 
 const clone = <T,>(value: T): T => mergeContent(value, undefined);
 
-const BASE_CAROUSELS: Record<string, CarouselBase> = (() => {
+const HOME_CAROUSEL_BASE: CarouselBase = (() => {
   const rawCompaniesSection = siteConfig.website.sections.find(
     (section) =>
       (section as { id?: string }).id === "companies" &&
@@ -117,34 +114,11 @@ const BASE_CAROUSELS: Record<string, CarouselBase> = (() => {
   };
 
   return {
-    home: {
-      companies: {
-        title: baseSectionEntry.title,
-        subtitle: DEFAULT_SUBTITLE,
-      },
-      sections: [buildSection(baseCards.map((card) => card.slug))],
+    companies: {
+      title: baseSectionEntry.title,
+      subtitle: DEFAULT_SUBTITLE,
     },
-    "cmon-design": {
-      companies: {
-        title: OTHER_COMPANY_TITLE,
-        subtitle: OTHER_COMPANY_SUBTITLE,
-      },
-      sections: [buildSection(["rebred", "gmep", "cmon-design"])],
-    },
-    gmep: {
-      companies: {
-        title: OTHER_COMPANY_TITLE,
-        subtitle: OTHER_COMPANY_SUBTITLE,
-      },
-      sections: [buildSection(["cmon-design", "rebred", "gmep"])],
-    },
-    rebred: {
-      companies: {
-        title: OTHER_COMPANY_TITLE,
-        subtitle: OTHER_COMPANY_SUBTITLE,
-      },
-      sections: [buildSection(["gmep", "cmon-design", "rebred"])],
-    },
+    sections: [buildSection(baseCards.map((card) => card.slug))],
   };
 })();
 
@@ -168,25 +142,22 @@ function usePrefersReducedMotion() {
 
 export interface CompaniesCarouselProps {
   className?: string;
-  carouselId?: string; // 'home', 'cmon-design', 'gmep', 'rebred'
 }
 
 export default function CompaniesCarousel({
   className,
-  carouselId = "home",
-}: CompaniesCarouselProps) {
+}: CompaniesCarouselProps = {}) {
   const { websiteContent } = useContent();
+  const baseCarousel = HOME_CAROUSEL_BASE;
+  const overrideData = {
+    companies: websiteContent?.home?.companies,
+    sections: websiteContent?.home?.sections,
+  };
 
-  const baseCarousel = BASE_CAROUSELS[carouselId] ?? BASE_CAROUSELS.home;
-  const overrideData =
-    carouselId === "home"
-      ? {
-          companies: websiteContent?.home?.companies,
-          sections: websiteContent?.home?.sections,
-        }
-      : websiteContent?.carousels?.[carouselId];
-
-  const mergedCarousel = mergeContent(baseCarousel, overrideData);
+  const mergedCarousel = mergeContent(
+    baseCarousel,
+    overrideData
+  ) as CarouselBase;
   const dynamicSections = mergedCarousel.sections;
   const carouselMeta = mergedCarousel.companies ?? baseCarousel.companies;
 
@@ -291,26 +262,15 @@ export default function CompaniesCarousel({
           id="companies-heading"
           className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
         >
-          <EditableWebsiteText
-            path={`${carouselId === "home" ? "home.companies" : `carousels.${carouselId}.companies`}.title`}
-          >
-            {carouselId === "home"
-              ? websiteContent?.home?.companies?.title || carouselMeta.title
-              : websiteContent?.carousels?.[carouselId]?.companies?.title ||
-                carouselMeta.title}
+          <EditableWebsiteText path="home.companies.title">
+            {websiteContent?.home?.companies?.title || carouselMeta.title}
           </EditableWebsiteText>
         </h2>
         <p className="text-muted text-base md:text-lg leading-relaxed">
-          <EditableWebsiteText
-            path={`${carouselId === "home" ? "home.companies" : `carousels.${carouselId}.companies`}.subtitle`}
-          >
-            {carouselId === "home"
-              ? websiteContent?.home?.companies?.subtitle ||
-                carouselMeta.subtitle ||
-                DEFAULT_SUBTITLE
-              : websiteContent?.carousels?.[carouselId]?.companies?.subtitle ||
-                carouselMeta.subtitle ||
-                DEFAULT_SUBTITLE}
+          <EditableWebsiteText path="home.companies.subtitle">
+            {websiteContent?.home?.companies?.subtitle ||
+              carouselMeta.subtitle ||
+              DEFAULT_SUBTITLE}
           </EditableWebsiteText>
         </p>
       </header>
@@ -339,11 +299,7 @@ export default function CompaniesCarousel({
       <div className="block lg:hidden">
         <div className="grid gap-6">
           {cards.map((card, cardIndex) => {
-            const basePath =
-              carouselId === "home"
-                ? "home.sections.0"
-                : `carousels.${carouselId}.sections.0`;
-            const cardPath = `${basePath}.cards.${cardIndex}`;
+            const cardPath = `home.sections.0.cards.${cardIndex}`;
 
             return (
               <article
@@ -447,11 +403,7 @@ export default function CompaniesCarousel({
                 const z = isActive ? depth.activeZ : depth.inactiveZ;
                 const hidden = Math.abs(position) > 3;
 
-                const basePath =
-                  carouselId === "home"
-                    ? "home.sections.0"
-                    : `carousels.${carouselId}.sections.0`;
-                const cardPath = `${basePath}.cards.${idx}`;
+                const cardPath = `home.sections.0.cards.${idx}`;
 
                 return (
                   <motion.article
@@ -550,11 +502,7 @@ export default function CompaniesCarousel({
       {(!companies.presentation || companies.presentation !== "slider") && (
         <div className="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto px-8">
           {cards.map((card, cardIndex) => {
-            const basePath =
-              carouselId === "home"
-                ? "home.sections.0"
-                : `carousels.${carouselId}.sections.0`;
-            const cardPath = `${basePath}.cards.${cardIndex}`;
+            const cardPath = `home.sections.0.cards.${cardIndex}`;
 
             return (
               <article
