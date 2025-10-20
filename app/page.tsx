@@ -59,8 +59,23 @@ type AnySection =
   | CtaBandSection
   | { type: string; id: string };
 
+interface MetricsCard {
+  id: string;
+  value: string;
+  label: string;
+  description: string;
+}
+
+interface MetricsSection {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  cards: readonly MetricsCard[];
+}
+
 export default function HomePage() {
-  const { hero, sections } = siteConfig.website;
+  const { hero, sections, metrics } = siteConfig.website;
   const { websiteContent, isLoading } = useContent();
 
   // Use dynamic content from Firebase if available, fallback to static config
@@ -69,10 +84,23 @@ export default function HomePage() {
     [hero, websiteContent?.home?.hero]
   );
 
+  const dynamicMetrics = useMemo(
+    () => mergeContent(metrics, websiteContent?.home?.metrics),
+    [metrics, websiteContent?.home?.metrics]
+  ) as MetricsSection;
+
   const dynamicSections = useMemo(
     () => mergeContent(sections, websiteContent?.home?.sections),
     [sections, websiteContent?.home?.sections]
   );
+
+  const normalizedMetrics = useMemo<MetricsSection>(() => {
+    const cards = toArray<MetricsCard>(dynamicMetrics?.cards);
+    return {
+      ...dynamicMetrics,
+      cards,
+    };
+  }, [dynamicMetrics]);
 
   // Index sections once (performance + clarity)
   const { servicesTabs, ctaBand } = useMemo(() => {
@@ -179,8 +207,80 @@ export default function HomePage() {
         </div>
       </section>
 
-      <CompaniesCarousel />
+      {/* Metrics */}
+      {normalizedMetrics.cards.length > 0 && (
+        <section
+          id={normalizedMetrics.id}
+          className="relative max-w-7xl mx-auto px-8"
+          aria-labelledby="metrics-heading"
+        >
+          <div className="rounded-3xl bg-surface shadow-soft ring-1 ring-black/5 px-8 py-12 md:py-16">
+            <header className="text-center space-y-3 md:space-y-4 max-w-3xl mx-auto mb-10 md:mb-14">
+              {normalizedMetrics.eyebrow && (
+                <EditableWebsiteText
+                  path="home.metrics.eyebrow"
+                  className="block text-xs font-semibold tracking-[0.35em] uppercase text-accent"
+                  tag="span"
+                >
+                  {normalizedMetrics.eyebrow}
+                </EditableWebsiteText>
+              )}
+              <h2
+                id="metrics-heading"
+                className="font-heading text-3xl md:text-5xl tracking-tight"
+              >
+                <EditableWebsiteText path="home.metrics.title">
+                  {normalizedMetrics.title}
+                </EditableWebsiteText>
+              </h2>
+              {normalizedMetrics.subtitle && (
+                <EditableWebsiteText
+                  path="home.metrics.subtitle"
+                  className="text-sm md:text-base text-muted leading-relaxed"
+                  tag="p"
+                >
+                  {normalizedMetrics.subtitle}
+                </EditableWebsiteText>
+              )}
+            </header>
+            <div className="grid gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-4">
+              {normalizedMetrics.cards.map((card, index) => (
+                <article
+                  key={card.id || index}
+                  className="relative overflow-hidden rounded-3xl bg-background/60 px-6 py-8 md:px-7 md:py-9 border border-black/5 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="flex flex-col gap-3">
+                    <EditableWebsiteText
+                      path={`home.metrics.cards.${index}.value`}
+                      className="block text-4xl md:text-5xl font-heading text-text"
+                      tag="span"
+                    >
+                      {card.value}
+                    </EditableWebsiteText>
+                    <EditableWebsiteText
+                      path={`home.metrics.cards.${index}.label`}
+                      className="text-sm uppercase tracking-[0.2em] text-accent font-medium"
+                      tag="h3"
+                    >
+                      {card.label}
+                    </EditableWebsiteText>
+                    <EditableWebsiteText
+                      path={`home.metrics.cards.${index}.description`}
+                      className="text-sm text-muted leading-relaxed"
+                      tag="p"
+                    >
+                      {card.description}
+                    </EditableWebsiteText>
+                  </div>
+                  <div className="absolute inset-0 pointer-events-none border border-transparent rounded-3xl transition-colors duration-300 hover:border-accent/30" />
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
+      <CompaniesCarousel />
       {/* Services Tabs (rendered as cards) */}
       {servicesTabs && (
         <section

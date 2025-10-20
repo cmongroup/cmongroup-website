@@ -140,6 +140,43 @@ export const siteConfig = {
         },
       },
     },
+    metrics: {
+      id: "metrics",
+      eyebrow: "Impact in numbers",
+      title: "Proof that integrated delivery drives results",
+      subtitle:
+        "Design vision, brand strategy, and engineering execution combine to deliver measurable outcomes for every engagement.",
+      cards: [
+        {
+          id: "projects-delivered",
+          value: "120+",
+          label: "Projects delivered",
+          description:
+            "Hospitality, retail, and corporate environments completed across the region.",
+        },
+        {
+          id: "markets-served",
+          value: "6",
+          label: "Markets served",
+          description:
+            "Cross-border delivery spanning GCC hubs with consistent quality assurance.",
+        },
+        {
+          id: "team-experts",
+          value: "45",
+          label: "Specialists on team",
+          description:
+            "Designers, strategists, engineers, and project leaders aligned under one group.",
+        },
+        {
+          id: "repeat-clients",
+          value: "82%",
+          label: "Repeat engagements",
+          description:
+            "Clients who return for new concepts, rollouts, and operational expansions.",
+        },
+      ],
+    },
     sections: [
       {
         id: "companies",
