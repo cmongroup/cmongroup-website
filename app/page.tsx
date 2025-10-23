@@ -2,7 +2,7 @@
 import { mergeContent, toArray } from "@/lib/contentUtils";
 import { siteConfig } from "@/lib/siteConfig";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import EditableWebsiteText from "@/app/components/EditableWebsiteText";
 import EditableWebsiteImage from "@/app/components/EditableWebsiteImage";
 import CompaniesCarousel from "@/app/components/CompaniesCarousel";
@@ -32,6 +32,64 @@ function Button({ action }: { action: Action }) {
     >
       {action.title}
     </Link>
+  );
+}
+
+const BASE_BRAND_WIDTH = 104;
+const BASE_BRAND_HEIGHT = 62;
+
+function BrandLogoCard({
+  path,
+  src,
+  alt,
+}: {
+  path: string;
+  src: string;
+  alt: string;
+}) {
+  const [scale, setScale] = useState(1);
+
+  const handleLoadComplete = ({
+    naturalWidth,
+    naturalHeight,
+  }: {
+    naturalWidth: number;
+    naturalHeight: number;
+  }) => {
+    if (!naturalWidth || !naturalHeight) {
+      return;
+    }
+
+    const aspectRatio = naturalWidth / naturalHeight;
+    let computedScale = 1;
+
+    if (aspectRatio < 1.4) {
+      computedScale = Math.min(1.35, 1 + (1.4 - aspectRatio) * 0.35);
+    } else if (aspectRatio > 3) {
+      computedScale = Math.min(1.2, 1 + (aspectRatio - 3) * 0.08);
+    }
+
+    setScale(Number(computedScale.toFixed(2)));
+  };
+
+  const width = BASE_BRAND_WIDTH * scale;
+  const height = BASE_BRAND_HEIGHT * scale;
+
+  return (
+    <div
+      className="flex-shrink-0 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-4 hover:shadow-md hover:scale-110 transition-all duration-300 overflow-hidden"
+      style={{ width, height }}
+    >
+      <EditableWebsiteImage
+        path={path}
+        src={src}
+        alt={alt}
+        width={BASE_BRAND_WIDTH}
+        height={BASE_BRAND_HEIGHT}
+        className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+        onLoadComplete={handleLoadComplete}
+      />
+    </div>
   );
 }
 
@@ -291,7 +349,7 @@ export default function HomePage() {
           <header className="space-y-4 max-w-3xl text-center mx-auto">
             <h2
               id="services-heading"
-              className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
+              className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent pb-1"
             >
               <EditableWebsiteText path="home.services.title">
                 {websiteContent?.home?.services?.title || servicesTabs.title}
@@ -351,102 +409,82 @@ export default function HomePage() {
       )}
 
       {/* Trusted Brands Section */}
-      <section className="relative max-w-7xl mx-auto px-8">
-        <div className="rounded-3xl bg-surface shadow-soft ring-1 ring-black/5 px-8 py-12 md:py-16">
-          <div className="text-center mb-8">
-            <h2 className="font-heading text-2xl md:text-3xl tracking-tight text-text mb-2">
-              <EditableWebsiteText path="home.trustedBrands.title">
-                Trusted by Leading Brands
-              </EditableWebsiteText>
-            </h2>
-            <p className="text-sm text-muted max-w-2xl mx-auto">
-              <EditableWebsiteText path="home.trustedBrands.subtitle">
-                We&apos;ve partnered with industry leaders across various sectors
-              </EditableWebsiteText>
-            </p>
-          </div>
+      <section
+        className="py-16 md:py-20 space-y-6 md:space-y-10"
+        aria-labelledby="trusted-brands-heading"
+      >
+        <header className="space-y-4 max-w-3xl text-center mx-auto">
+          <h2
+            id="trusted-brands-heading"
+            className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent pb-1"
+          >
+            <EditableWebsiteText path="home.trustedBrands.title">
+              Trusted by Leading Brands
+            </EditableWebsiteText>
+          </h2>
+          <p className="text-muted text-base md:text-lg leading-relaxed">
+            <EditableWebsiteText path="home.trustedBrands.subtitle">
+              We&apos;ve partnered with industry leaders across various sectors
+            </EditableWebsiteText>
+          </p>
+        </header>
 
-          <div className="relative overflow-hidden">
-            <div className="flex animate-scroll">
-              {/* First set of brands */}
-              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
-                  <div
-                    key={`brand-${num}`}
-                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
-                  >
-                    <EditableWebsiteImage
+        <div className="relative max-w-7xl mx-auto px-8">
+          <div className="rounded-3xl bg-surface shadow-soft ring-1 ring-black/5 px-8 py-12 md:py-16">
+            <div className="relative overflow-hidden">
+              <div className="flex animate-scroll">
+                {/* First set of brands */}
+                <div className="flex items-center gap-8 md:gap-12 flex-shrink-0 py-2">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
+                    <BrandLogoCard
+                      key={`brand-${num}`}
                       path={`home.trustedBrands.brands.${num - 1}.logo`}
                       src={`/images/companies/${num}.png`}
                       alt={`Brand ${num} logo`}
-                      width={80}
-                      height={40}
-                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     />
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* Duplicate set for seamless loop */}
-              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
-                  <div
-                    key={`brand-duplicate-${num}`}
-                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
-                  >
-                    <EditableWebsiteImage
+                {/* Duplicate set for seamless loop */}
+                <div className="flex items-center gap-8 md:gap-12 flex-shrink-0 py-2">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
+                    <BrandLogoCard
+                      key={`brand-duplicate-${num}`}
                       path={`home.trustedBrands.brands.${num - 1}.logo`}
                       src={`/images/companies/${num}.png`}
                       alt={`Brand ${num} logo`}
-                      width={80}
-                      height={40}
-                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Second row for remaining brands */}
-          <div className="relative overflow-hidden mt-6">
-            <div className="flex animate-scroll-reverse">
-              {/* Second set of brands */}
-              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
-                {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
-                  <div
-                    key={`brand-2-${num}`}
-                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
-                  >
-                    <EditableWebsiteImage
+            {/* Second row for remaining brands */}
+            <div className="relative overflow-hidden mt-6">
+              <div className="flex animate-scroll-reverse">
+                {/* Second set of brands */}
+                <div className="flex items-center gap-8 md:gap-12 flex-shrink-0 py-2">
+                  {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
+                    <BrandLogoCard
+                      key={`brand-2-${num}`}
                       path={`home.trustedBrands.brands.${num - 1}.logo`}
                       src={`/images/companies/${num}.png`}
                       alt={`Brand ${num} logo`}
-                      width={80}
-                      height={40}
-                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     />
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* Duplicate set for seamless loop */}
-              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
-                {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
-                  <div
-                    key={`brand-2-duplicate-${num}`}
-                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
-                  >
-                    <EditableWebsiteImage
+                {/* Duplicate set for seamless loop */}
+                <div className="flex items-center gap-8 md:gap-12 flex-shrink-0 py-2">
+                  {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
+                    <BrandLogoCard
+                      key={`brand-2-duplicate-${num}`}
                       path={`home.trustedBrands.brands.${num - 1}.logo`}
                       src={`/images/companies/${num}.png`}
                       alt={`Brand ${num} logo`}
-                      width={80}
-                      height={40}
-                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>

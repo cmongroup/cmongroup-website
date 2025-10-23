@@ -260,7 +260,7 @@ export default function CompaniesCarousel({
       <header className="space-y-4 max-w-3xl text-center mx-auto mb-4">
         <h2
           id="companies-heading"
-          className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent"
+          className="font-heading text-3xl md:text-5xl tracking-tight bg-linear-to-r from-text to-text/70 bg-clip-text text-transparent pb-1"
         >
           <EditableWebsiteText path="home.companies.title">
             {websiteContent?.home?.companies?.title || carouselMeta.title}

@@ -14,6 +14,7 @@ interface EditableWebsiteImageProps {
   className?: string;
   priority?: boolean;
   placeholderSrc?: string;
+  onLoadComplete?: (info: { naturalWidth: number; naturalHeight: number }) => void;
 }
 
 // Image compression function
@@ -70,6 +71,7 @@ export default function EditableWebsiteImage({
   className = "",
   priority = false,
   placeholderSrc,
+  onLoadComplete,
 }: EditableWebsiteImageProps) {
   const { isAdmin } = useAuth();
   const { updateWebsiteImage } = useContent();
@@ -210,6 +212,7 @@ export default function EditableWebsiteImage({
         height={height}
         className={className}
         priority={priority}
+        onLoadingComplete={onLoadComplete}
       />
     );
   }
@@ -299,6 +302,7 @@ export default function EditableWebsiteImage({
         className={`${className} ${isAdmin ? "cursor-pointer" : ""}`}
         priority={priority}
         onClick={handleClick}
+        onLoadingComplete={onLoadComplete}
       />
 
       {isAdmin && (
