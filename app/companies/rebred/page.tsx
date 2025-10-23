@@ -156,13 +156,13 @@ export default function RebredPage() {
                   companySlug="rebred"
                   path="section2Src"
                   src={
-                    images?.section2Src || "/images/placeholder-expertise.jpg"
+                    images?.section2Src || "/images/companies/rebred-cover.jpg"
                   }
                   alt={images?.section2Alt || "Brand strategy expertise"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc="/images/placeholder-expertise.jpg"
+                  placeholderSrc="/images/companies/rebred-cover.jpg"
                 />
               </div>
             </div>
@@ -197,13 +197,13 @@ export default function RebredPage() {
                   companySlug="rebred"
                   path="section3Src"
                   src={
-                    images?.section3Src || "/images/placeholder-reliability.jpg"
+                    images?.section3Src || "/images/companies/rebred-cover.jpg"
                   }
                   alt={images?.section3Alt || "Strategic brand development"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc="/images/placeholder-reliability.jpg"
+                  placeholderSrc="/images/companies/rebred-cover.jpg"
                 />
               </div>
             </div>
@@ -238,13 +238,13 @@ export default function RebredPage() {
                   companySlug="rebred"
                   path="section4Src"
                   src={
-                    images?.section4Src || "/images/placeholder-strategy.jpg"
+                    images?.section4Src || "/images/companies/rebred-cover.jpg"
                   }
                   alt={images?.section4Alt || "Brand strategy development"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc="/images/placeholder-strategy.jpg"
+                  placeholderSrc="/images/companies/rebred-cover.jpg"
                 />
               </div>
             </div>
@@ -278,12 +278,12 @@ export default function RebredPage() {
                 <EditableImage
                   companySlug="rebred"
                   path="section5Src"
-                  src={images?.section5Src || "/images/placeholder-success.jpg"}
+                  src={images?.section5Src || "/images/companies/rebred-cover.jpg"}
                   alt={images?.section5Alt || "Market success and growth"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc="/images/placeholder-success.jpg"
+                  placeholderSrc="/images/companies/rebred-cover.jpg"
                 />
               </div>
             </div>

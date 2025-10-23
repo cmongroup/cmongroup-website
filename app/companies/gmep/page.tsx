@@ -156,7 +156,7 @@ export default function GmepPage() {
                   companySlug="gmep"
                   path="section2Src"
                   src={
-                    images?.section2Src || "/images/placeholder-expertise.jpg"
+                    images?.section2Src || "/images/companies/gmep-cover.jpg"
                   }
                   alt={
                     images?.section2Alt || "Technical expertise illustration"
@@ -164,7 +164,7 @@ export default function GmepPage() {
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc={"/images/placeholder-expertise.jpg"}
+                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
                 />
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function GmepPage() {
                   companySlug="gmep"
                   path="section3Src"
                   src={
-                    images?.section3Src || "/images/placeholder-reliability.jpg"
+                    images?.section3Src || "/images/companies/gmep-cover.jpg"
                   }
                   alt={
                     images?.section3Alt || "Reliability and systems integration"
@@ -204,7 +204,7 @@ export default function GmepPage() {
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc={"/images/placeholder-reliability.jpg"}
+                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
                 />
               </div>
             </div>
@@ -235,12 +235,12 @@ export default function GmepPage() {
                 <EditableImage
                   companySlug="gmep"
                   path="section4Src"
-                  src={images?.section4Src || "/images/placeholder-quality.jpg"}
+                  src={images?.section4Src || "/images/companies/gmep-cover.jpg"}
                   alt={images?.section4Alt || "Quality assurance and testing"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc={"/images/placeholder-quality.jpg"}
+                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
                 />
               </div>
             </div>
@@ -272,13 +272,13 @@ export default function GmepPage() {
                   companySlug="gmep"
                   path="section5Src"
                   src={
-                    images?.section5Src || "/images/placeholder-portfolio.jpg"
+                    images?.section5Src || "/images/companies/gmep-cover.jpg"
                   }
                   alt={images?.section5Alt || "Project portfolio showcase"}
                   width={600}
                   height={450}
                   className="w-full h-full object-cover"
-                  placeholderSrc={"/images/placeholder-portfolio.jpg"}
+                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
                 />
               </div>
             </div>

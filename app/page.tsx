@@ -350,6 +350,109 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Trusted Brands Section */}
+      <section className="relative max-w-7xl mx-auto px-8">
+        <div className="rounded-3xl bg-surface shadow-soft ring-1 ring-black/5 px-8 py-12 md:py-16">
+          <div className="text-center mb-8">
+            <h2 className="font-heading text-2xl md:text-3xl tracking-tight text-text mb-2">
+              <EditableWebsiteText path="home.trustedBrands.title">
+                Trusted by Leading Brands
+              </EditableWebsiteText>
+            </h2>
+            <p className="text-sm text-muted max-w-2xl mx-auto">
+              <EditableWebsiteText path="home.trustedBrands.subtitle">
+                We&apos;ve partnered with industry leaders across various sectors
+              </EditableWebsiteText>
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden">
+            <div className="flex animate-scroll">
+              {/* First set of brands */}
+              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
+                  <div
+                    key={`brand-${num}`}
+                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
+                  >
+                    <EditableWebsiteImage
+                      path={`home.trustedBrands.brands.${num - 1}.logo`}
+                      src={`/images/companies/${num}.png`}
+                      alt={`Brand ${num} logo`}
+                      width={80}
+                      height={40}
+                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Duplicate set for seamless loop */}
+              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((num) => (
+                  <div
+                    key={`brand-duplicate-${num}`}
+                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
+                  >
+                    <EditableWebsiteImage
+                      path={`home.trustedBrands.brands.${num - 1}.logo`}
+                      src={`/images/companies/${num}.png`}
+                      alt={`Brand ${num} logo`}
+                      width={80}
+                      height={40}
+                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Second row for remaining brands */}
+          <div className="relative overflow-hidden mt-6">
+            <div className="flex animate-scroll-reverse">
+              {/* Second set of brands */}
+              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
+                {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
+                  <div
+                    key={`brand-2-${num}`}
+                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
+                  >
+                    <EditableWebsiteImage
+                      path={`home.trustedBrands.brands.${num - 1}.logo`}
+                      src={`/images/companies/${num}.png`}
+                      alt={`Brand ${num} logo`}
+                      width={80}
+                      height={40}
+                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Duplicate set for seamless loop */}
+              <div className="flex items-center gap-8 md:gap-12 flex-shrink-0">
+                {[15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27].map((num) => (
+                  <div
+                    key={`brand-2-duplicate-${num}`}
+                    className="flex-shrink-0 w-20 h-12 md:w-24 md:h-14 bg-white rounded-lg shadow-sm ring-1 ring-black/5 flex items-center justify-center p-2 hover:shadow-md transition-shadow duration-300"
+                  >
+                    <EditableWebsiteImage
+                      path={`home.trustedBrands.brands.${num - 1}.logo`}
+                      src={`/images/companies/${num}.png`}
+                      alt={`Brand ${num} logo`}
+                      width={80}
+                      height={40}
+                      className="w-full h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Band */}
       {ctaBand && (
         <section
@@ -379,6 +482,7 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
     </main>
   );
 }
