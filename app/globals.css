@@ -254,11 +254,13 @@ html {
 }
 
 .animate-scroll {
-  animation: scroll 60s linear infinite;
+  /* 1.5x faster than original 60s -> 40s */
+  animation: scroll 25s linear infinite;
 }
 
 .animate-scroll-reverse {
-  animation: scroll-reverse 60s linear infinite;
+  /* 1.5x faster than original 60s -> 40s */
+  animation: scroll-reverse 25s linear infinite;
 }
 
 /* Pause animation on hover for better UX */
