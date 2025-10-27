@@ -63,13 +63,18 @@ export default function RebredPage() {
 
   // Helper function to get images and alts for each section with fallback to legacy structure
   const getSectionImages = (sectionNum: number) => {
-    const sectionImages = images?.[`section${sectionNum}Images`] || [];
-    const sectionAlts = images?.[`section${sectionNum}Alts`] || [];
+    const imagesKey = `section${sectionNum}Images` as keyof typeof images;
+    const altsKey = `section${sectionNum}Alts` as keyof typeof images;
+    const legacySrcKey = `section${sectionNum}Src` as keyof typeof images;
+    const legacyAltKey = `section${sectionNum}Alt` as keyof typeof images;
+
+    const sectionImages = (images?.[imagesKey] as string[] | undefined) || [];
+    const sectionAlts = (images?.[altsKey] as string[] | undefined) || [];
 
     // Fallback to legacy single image if array is empty
     if (sectionImages.length === 0 || !sectionImages[0]) {
-      const legacySrc = images?.[`section${sectionNum}Src`];
-      const legacyAlt = images?.[`section${sectionNum}Alt`];
+      const legacySrc = images?.[legacySrcKey] as string | undefined;
+      const legacyAlt = images?.[legacyAltKey] as string | undefined;
       if (legacySrc) {
         return {
           images: [legacySrc],
