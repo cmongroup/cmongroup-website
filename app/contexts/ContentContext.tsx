@@ -52,16 +52,27 @@ interface CompanyContent {
 interface CompanyImages {
   coverSrc: string;
   coverAlt: string;
-  section1Src: string;
-  section1Alt: string;
-  section2Src: string;
-  section2Alt: string;
-  section3Src: string;
-  section3Alt: string;
-  section4Src: string;
-  section4Alt: string;
-  section5Src: string;
-  section5Alt: string;
+  section1Images: string[];
+  section1Alts: string[];
+  section2Images: string[];
+  section2Alts: string[];
+  section3Images: string[];
+  section3Alts: string[];
+  section4Images: string[];
+  section4Alts: string[];
+  section5Images: string[];
+  section5Alts: string[];
+  // Legacy support for old structure
+  section1Src?: string;
+  section1Alt?: string;
+  section2Src?: string;
+  section2Alt?: string;
+  section3Src?: string;
+  section3Alt?: string;
+  section4Src?: string;
+  section4Alt?: string;
+  section5Src?: string;
+  section5Alt?: string;
 }
 
 interface FooterContent {
@@ -121,6 +132,12 @@ interface ContentContextType {
     companySlug: string,
     path: string,
     value: string
+  ) => Promise<void>;
+  updateCompanySectionImages: (
+    companySlug: string,
+    sectionNumber: number,
+    images: string[],
+    alts: string[]
   ) => Promise<void>;
   updateWebsiteText: (path: string, value: string | string[]) => Promise<void>;
   updateWebsiteImage: (path: string, value: string) => Promise<void>;
@@ -328,6 +345,29 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateCompanySectionImages = async (
+    companySlug: string,
+    sectionNumber: number,
+    images: string[],
+    alts: string[]
+  ) => {
+    try {
+      const db = getFirestore(app);
+      const companyRef = doc(db, "companyImages", companySlug);
+
+      // Update both images and alts arrays for the section
+      const updateData = {
+        [`section${sectionNumber}Images`]: images,
+        [`section${sectionNumber}Alts`]: alts,
+      };
+
+      await updateDoc(companyRef, updateData);
+    } catch (error) {
+      console.error("Error updating company section images:", error);
+      throw error;
+    }
+  };
+
   const updateFooterText = async (path: string, value: string) => {
     try {
       const db = getFirestore(app);
@@ -419,6 +459,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         updateCompanyText,
         updateCompanyImage,
+        updateCompanySectionImages,
         updateWebsiteText,
         updateWebsiteImage,
         updateFooterText,

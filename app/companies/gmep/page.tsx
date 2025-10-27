@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import Link from "next/link";
 import { useContent } from "@/app/contexts/ContentContext";
 import EditableText from "@/app/components/EditableText";
-import EditableImage from "@/app/components/EditableImage";
+import EditableImageSlider from "@/app/components/EditableImageSlider";
 
 // Button + action typing
 export type ButtonVariant = "primary" | "ghost" | "accent" | "black";
@@ -61,6 +61,33 @@ export default function GmepPage() {
   const content = companyContent?.gmep;
   const images = companyImages?.gmep;
 
+  // Helper function to get images and alts for each section with fallback to legacy structure
+  const getSectionImages = (sectionNum: number) => {
+    const sectionImages = images?.[`section${sectionNum}Images`] || [];
+    const sectionAlts = images?.[`section${sectionNum}Alts`] || [];
+
+    // Fallback to legacy single image if array is empty
+    if (sectionImages.length === 0 || !sectionImages[0]) {
+      const legacySrc = images?.[`section${sectionNum}Src`];
+      const legacyAlt = images?.[`section${sectionNum}Alt`];
+      if (legacySrc) {
+        return {
+          images: [legacySrc],
+          alts: [legacyAlt || `Section ${sectionNum} image`],
+        };
+      }
+      return {
+        images: [],
+        alts: [],
+      };
+    }
+
+    return {
+      images: sectionImages,
+      alts: sectionAlts,
+    };
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-8 py-6">
@@ -85,18 +112,13 @@ export default function GmepPage() {
           <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
-              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <EditableImage
-                  companySlug="gmep"
-                  path="section1Src"
-                  src={images?.section1Src || company.media.cover}
-                  alt={images?.section1Alt || company.media.alt}
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                  placeholderSrc={company.media.cover}
-                />
-              </div>
+              <EditableImageSlider
+                companySlug="gmep"
+                sectionNumber={1}
+                images={getSectionImages(1).images}
+                alts={getSectionImages(1).alts}
+                placeholderSrc={company.media.cover}
+              />
             </div>
 
             {/* Content Section */}
@@ -151,22 +173,13 @@ export default function GmepPage() {
           <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
-              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <EditableImage
-                  companySlug="gmep"
-                  path="section2Src"
-                  src={
-                    images?.section2Src || "/images/companies/gmep-cover.jpg"
-                  }
-                  alt={
-                    images?.section2Alt || "Technical expertise illustration"
-                  }
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
-                />
-              </div>
+              <EditableImageSlider
+                companySlug="gmep"
+                sectionNumber={2}
+                images={getSectionImages(2).images}
+                alts={getSectionImages(2).alts}
+                placeholderSrc="/images/companies/gmep-cover.jpg"
+              />
             </div>
 
             {/* Content Section */}
@@ -191,22 +204,13 @@ export default function GmepPage() {
           <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
-              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <EditableImage
-                  companySlug="gmep"
-                  path="section3Src"
-                  src={
-                    images?.section3Src || "/images/companies/gmep-cover.jpg"
-                  }
-                  alt={
-                    images?.section3Alt || "Reliability and systems integration"
-                  }
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
-                />
-              </div>
+              <EditableImageSlider
+                companySlug="gmep"
+                sectionNumber={3}
+                images={getSectionImages(3).images}
+                alts={getSectionImages(3).alts}
+                placeholderSrc="/images/companies/gmep-cover.jpg"
+              />
             </div>
 
             {/* Content Section */}
@@ -231,18 +235,13 @@ export default function GmepPage() {
           <article className="flex flex-col lg:flex-row-reverse gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
-              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <EditableImage
-                  companySlug="gmep"
-                  path="section4Src"
-                  src={images?.section4Src || "/images/companies/gmep-cover.jpg"}
-                  alt={images?.section4Alt || "Quality assurance and testing"}
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
-                />
-              </div>
+              <EditableImageSlider
+                companySlug="gmep"
+                sectionNumber={4}
+                images={getSectionImages(4).images}
+                alts={getSectionImages(4).alts}
+                placeholderSrc="/images/companies/gmep-cover.jpg"
+              />
             </div>
 
             {/* Content Section */}
@@ -267,20 +266,13 @@ export default function GmepPage() {
           <article className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
             {/* Image Section */}
             <div className="w-full lg:w-1/2">
-              <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
-                <EditableImage
-                  companySlug="gmep"
-                  path="section5Src"
-                  src={
-                    images?.section5Src || "/images/companies/gmep-cover.jpg"
-                  }
-                  alt={images?.section5Alt || "Project portfolio showcase"}
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                  placeholderSrc={"/images/companies/gmep-cover.jpg"}
-                />
-              </div>
+              <EditableImageSlider
+                companySlug="gmep"
+                sectionNumber={5}
+                images={getSectionImages(5).images}
+                alts={getSectionImages(5).alts}
+                placeholderSrc="/images/companies/gmep-cover.jpg"
+              />
             </div>
 
             {/* Content Section */}
