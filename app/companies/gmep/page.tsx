@@ -140,8 +140,8 @@ export default function GmepPage() {
                   </EditableText>
                 </p>
                 <p className="text-muted leading-relaxed">
-                  <EditableText companySlug="gmep" path="section1.summary">
-                    {content?.section1?.summary ||
+                  <EditableText companySlug="gmep" path="section1.description">
+                    {content?.section1?.description ||
                       "Precision engineering meets practical execution. Our MEP specialists ensure building systems work seamlessly together, from HVAC optimization to smart building integration. We handle complex technical challenges while maintaining focus on energy efficiency, sustainability, and long-term reliability."}
                   </EditableText>
                 </p>

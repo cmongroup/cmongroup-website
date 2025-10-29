@@ -20,6 +20,7 @@ interface CompanyContent {
   section1: {
     title: string;
     summary: string;
+    description: string;
     services: string;
     servicesLabel: string;
   };

@@ -145,9 +145,9 @@ export default function CmonDesignPage() {
                 <p className="text-muted leading-relaxed">
                   <EditableText
                     companySlug="cmon-design"
-                    path="section1.summary"
+                    path="section1.description"
                   >
-                    {content?.section1?.summary ||
+                    {content?.section1?.description ||
                       "We create exceptional digital experiences that combine beautiful design with powerful functionality. Our team specializes in user-centered design, modern development practices, and creating solutions that drive business results while delighting users."}
                   </EditableText>
                 </p>

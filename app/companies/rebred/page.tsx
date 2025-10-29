@@ -140,8 +140,11 @@ export default function RebredPage() {
                   </EditableText>
                 </p>
                 <p className="text-muted leading-relaxed">
-                  <EditableText companySlug="rebred" path="section1.summary">
-                    {content?.section1?.summary ||
+                  <EditableText
+                    companySlug="rebred"
+                    path="section1.description"
+                  >
+                    {content?.section1?.description ||
                       "We don't just rebrand restaurants—we reimagine them. Our strategic approach goes beyond visual identity to create comprehensive brand systems that drive customer engagement and business growth. From menu engineering to franchise development, we build brands that scale and succeed in competitive markets."}
                   </EditableText>
                 </p>
