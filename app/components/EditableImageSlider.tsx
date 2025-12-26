@@ -47,7 +47,7 @@ const isDataUrlTooLarge = (dataUrl: string): boolean => {
   const base64Data = dataUrl.split(",")[1];
   if (!base64Data) return false;
   const sizeInBytes = (base64Data.length * 3) / 4;
-  const maxSizeInBytes = 150 * 1024; // 150KB limit
+  const maxSizeInBytes = 250 * 1024; // 250KB limit (per image, allowing ~4 images per 1MB section doc)
   return sizeInBytes > maxSizeInBytes;
 };
 
@@ -112,7 +112,7 @@ export default function EditableImageSlider({
       return;
     }
 
-    const maxFileSize = 5 * 1024 * 1024; // 5MB source limit (still allow upload of large files, we just compress them hard)
+    const maxFileSize = 5 * 1024 * 1024; // 5MB source limit
     if (file.size > maxFileSize) {
       setError(
         "Image file is too large. Please select an image smaller than 5MB."
@@ -124,21 +124,21 @@ export default function EditableImageSlider({
       setError(null);
       setIsLoading(true);
 
-      // Aggressive compression strategy for 150KB target
-      // 1. Try reasonable quality
-      let compressedDataUrl = await compressImage(file, 800, 0.7);
+      // Relaxed compression strategy for 250KB target
+      // 1. Try high quality first
+      let compressedDataUrl = await compressImage(file, 800, 0.85);
 
       if (isDataUrlTooLarge(compressedDataUrl)) {
-        // 2. Reduce size
-        compressedDataUrl = await compressImage(file, 600, 0.7);
+        // 2. Reduce quality slightly
+        compressedDataUrl = await compressImage(file, 800, 0.7);
         
         if (isDataUrlTooLarge(compressedDataUrl)) {
-          // 3. Reduce quality
-          compressedDataUrl = await compressImage(file, 600, 0.5);
+          // 3. Reduce size
+          compressedDataUrl = await compressImage(file, 600, 0.7);
 
           if (isDataUrlTooLarge(compressedDataUrl)) {
-            // 4. Reduce size and quality (Last Resort)
-            compressedDataUrl = await compressImage(file, 400, 0.5);
+            // 4. Fallback
+            compressedDataUrl = await compressImage(file, 600, 0.5);
 
             if (isDataUrlTooLarge(compressedDataUrl)) {
               setError(
@@ -232,7 +232,7 @@ export default function EditableImageSlider({
   if (localImages.length === 0) {
     return (
       <div className={`relative ${className}`}>
-        <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5 flex items-center justify-center">
+        <div className="aspect-4/3 overflow-hidden bg-muted/10 relative rounded-2xl shadow-soft ring-1 ring-black/5 flex items-center justify-center">
           {placeholderSrc ? (
             <Image
               src={placeholderSrc}
@@ -271,12 +271,12 @@ export default function EditableImageSlider({
   return (
     <div className={`relative ${className}`}>
       {/* Main Image Display */}
-      <div className="aspect-4/3 overflow-hidden bg-background relative rounded-2xl shadow-soft ring-1 ring-black/5">
+      <div className="aspect-4/3 overflow-hidden bg-black/5 relative rounded-2xl shadow-soft ring-1 ring-black/5 flex items-center justify-center">
         <Image
           src={localImages[currentIndex]}
           alt={localAlts[currentIndex] || `Image ${currentIndex + 1}`}
-          width={600}
-          height={450}
+          width={800}
+          height={600}
           className="w-full h-full object-cover"
         />
 

@@ -62,7 +62,7 @@ const isDataUrlTooLarge = (dataUrl: string): boolean => {
 
   // Calculate size in bytes (base64 is ~33% larger than binary)
   const sizeInBytes = (base64Data.length * 3) / 4;
-  const maxSizeInBytes = 250 * 1024; // 250KB limit
+  const maxSizeInBytes = 600 * 1024; // 600KB limit
   return sizeInBytes > maxSizeInBytes;
 };
 
@@ -119,29 +119,24 @@ export default function EditableImage({
       setError(null);
       setIsLoading(true);
 
-      // Compress the image - Target 250KB
-      // 1. Initial attempt
-      let compressedDataUrl = await compressImage(file, 800, 0.7);
+      // Compress the image - Target 600KB
+      // 1. Initial attempt (High quality)
+      let compressedDataUrl = await compressImage(file, 1200, 0.85);
 
       // Check if compressed image is still too large for Firebase
       if (isDataUrlTooLarge(compressedDataUrl)) {
-        // 2. Reduce size
-        compressedDataUrl = await compressImage(file, 600, 0.7);
+        // 2. Reduce size/quality slightly
+        compressedDataUrl = await compressImage(file, 800, 0.8);
 
         if (isDataUrlTooLarge(compressedDataUrl)) {
-          // 3. Reduce quality
-          compressedDataUrl = await compressImage(file, 600, 0.5);
+          // 3. Last resort
+          compressedDataUrl = await compressImage(file, 800, 0.6);
 
           if (isDataUrlTooLarge(compressedDataUrl)) {
-             // 4. Last resort
-             compressedDataUrl = await compressImage(file, 400, 0.5);
-
-             if (isDataUrlTooLarge(compressedDataUrl)) {
-                setError(
-                  "Image is still too large after compression. Please select a smaller or simpler image."
-                );
-                return;
-             }
+             setError(
+              "Image is still too large after compression. Please select a simpler image."
+             );
+             return;
           }
         }
       }
