@@ -47,7 +47,7 @@ const isDataUrlTooLarge = (dataUrl: string): boolean => {
   const base64Data = dataUrl.split(",")[1];
   if (!base64Data) return false;
   const sizeInBytes = (base64Data.length * 3) / 4;
-  const maxSizeInBytes = 800 * 1024; // 800KB limit
+  const maxSizeInBytes = 150 * 1024; // 150KB limit
   return sizeInBytes > maxSizeInBytes;
 };
 
@@ -112,7 +112,7 @@ export default function EditableImageSlider({
       return;
     }
 
-    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const maxFileSize = 5 * 1024 * 1024; // 5MB source limit (still allow upload of large files, we just compress them hard)
     if (file.size > maxFileSize) {
       setError(
         "Image file is too large. Please select an image smaller than 5MB."
@@ -124,16 +124,30 @@ export default function EditableImageSlider({
       setError(null);
       setIsLoading(true);
 
-      let compressedDataUrl = await compressImage(file, 800, 0.8);
+      // Aggressive compression strategy for 150KB target
+      // 1. Try reasonable quality
+      let compressedDataUrl = await compressImage(file, 800, 0.7);
 
       if (isDataUrlTooLarge(compressedDataUrl)) {
-        compressedDataUrl = await compressImage(file, 600, 0.6);
+        // 2. Reduce size
+        compressedDataUrl = await compressImage(file, 600, 0.7);
+        
         if (isDataUrlTooLarge(compressedDataUrl)) {
-          setError(
-            "Image is still too large after compression. Please select a smaller image."
-          );
-          setEditingIndex(null);
-          return;
+          // 3. Reduce quality
+          compressedDataUrl = await compressImage(file, 600, 0.5);
+
+          if (isDataUrlTooLarge(compressedDataUrl)) {
+            // 4. Reduce size and quality (Last Resort)
+            compressedDataUrl = await compressImage(file, 400, 0.5);
+
+            if (isDataUrlTooLarge(compressedDataUrl)) {
+              setError(
+                "Image is still too large after compression. Please select a simpler or smaller image."
+              );
+              setEditingIndex(null);
+              return;
+            }
+          }
         }
       }
 
