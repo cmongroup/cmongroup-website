@@ -186,13 +186,39 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
         const companyContent: Record<string, CompanyContent> = {};
         const companyImages: Record<string, CompanyImages> = {};
+        const fragments: Record<string, any> = {};
 
         companyContentSnapshot.forEach((doc) => {
           companyContent[doc.id] = doc.data() as CompanyContent;
         });
 
         companyImagesSnapshot.forEach((doc) => {
-          companyImages[doc.id] = doc.data() as CompanyImages;
+          const data = doc.data() as CompanyImages;
+          // Check for section fragments (e.g., "slug_section1")
+          const match = doc.id.match(/(.+)_section(\d+)$/);
+
+          if (match) {
+            const baseSlug = match[1];
+            if (!fragments[baseSlug]) fragments[baseSlug] = {};
+            // Merge fragment data
+            fragments[baseSlug] = { ...fragments[baseSlug], ...data };
+          } else {
+            // Main document
+            companyImages[doc.id] = data;
+          }
+        });
+
+        // Merge fragments into main company images
+        Object.keys(fragments).forEach((slug) => {
+          if (companyImages[slug]) {
+            companyImages[slug] = {
+              ...companyImages[slug],
+              ...fragments[slug],
+            };
+          } else {
+            // Even if main doc doesn't exist, allow fragment data
+            companyImages[slug] = fragments[slug] as CompanyImages;
+          }
         });
 
         // Get website content and images
@@ -354,7 +380,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   ) => {
     try {
       const db = getFirestore(app);
-      const companyRef = doc(db, "companyImages", companySlug);
+      // Use a separate document for each section to avoid 1MB limit
+      // Format: {slug}_section{N}
+      const fragmentId = `${companySlug}_section${sectionNumber}`;
+      const fragmentRef = doc(db, "companyImages", fragmentId);
 
       // Update both images and alts arrays for the section
       const updateData = {
@@ -362,7 +391,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         [`section${sectionNumber}Alts`]: alts,
       };
 
-      await updateDoc(companyRef, updateData);
+      // Use setDoc with merge: true to create if not exists
+      await setDoc(fragmentRef, updateData, { merge: true });
     } catch (error) {
       console.error("Error updating company section images:", error);
       throw error;
